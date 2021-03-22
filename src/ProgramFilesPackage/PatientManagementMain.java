@@ -1,7 +1,6 @@
 package ProgramFilesPackage;
 
 import com.google.gson.Gson;
-
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -19,5 +18,4 @@ public class PatientManagementMain {
         writer1.write(json);
         writer1.close();
     }
-
 }
