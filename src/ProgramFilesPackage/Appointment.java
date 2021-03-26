@@ -23,6 +23,7 @@ public class Appointment {
     }
 
     public void runAppointment() {
+        System.out.println("New Appointment");
         //menu select
         Scanner scan = new Scanner(System.in);
         int menuChoice = 0;
@@ -30,7 +31,7 @@ public class Appointment {
         while (!choiceValid) {
             try {
                 System.out.println("Enter number to select:\n1. Enter reasons for appointment\n2. Enter a new measurement\n3. Enter a new note");
-                menuChoice = scan.nextInt();
+                menuChoice = IntegerChecker.IntegerInput(menuChoice, scan);
                 if (menuChoice == 1 || menuChoice == 2 || menuChoice == 3) {
                     choiceValid = true;
                 }
@@ -70,15 +71,41 @@ public class Appointment {
                     this.reasons.add(reason);
                 }
             }
-            System.out.println("Reasons: ");
-            for (String r : this.reasons) {
-                System.out.println(r);
+            printReasons();
+
+            int change = 0;
+            System.out.println("Enter number to select:\n1. Delete a reason\n2. Edit a reason\n3. Confirm and Exit");
+            change = IntegerChecker.IntegerInput(change, scan);
+            switch (change) {
+                case 1:
+                    printReasons();
+                    while (change != 0) {
+                        System.out.println("Enter the number of the reason to delete (or 0 to stop): ");
+                        change = IntegerChecker.IntegerInput(change, scan);
+                        if (change != 0) {
+                            reasons.remove(change - 1);
+                            System.out.println("Reason removed.\nCurrent Reasons:");
+                            printReasons();
+                        }
+                    }
+
+                    break;
+                case 2:
+                    printReasons();
+                    System.out.println("Enter the number of the reason to edit: ");
+                    change = scan.nextInt();
+                    break;
+                case 3:
+                    System.out.println("Confirmed");
+                    break;
             }
-            String confirm;
-            System.out.println("Enter c to confirm list of reasons (or any key to edit):");
-            confirm = scan.nextLine();
-            if (!confirm.equals("c")) {
-                System.out.println("Enter number to select:\n1. Delete a reason\n2. Edit a reason\n3. exit and confirm");
+        }
+        private void printReasons() {
+            System.out.println("Reasons: ");
+            int i = 1;
+            for (String r : this.reasons) {
+                System.out.println(i + ". " + r);
+                i++;
             }
         }
 
