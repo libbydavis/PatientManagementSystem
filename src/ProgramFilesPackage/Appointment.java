@@ -11,7 +11,7 @@ public class Appointment {
     private Patient patient;
     private ArrayList<String> reasons;
     private ArrayList<Measurement> measurementsTaken;
-    private HashSet<String> notes;
+    private ArrayList<String> notes;
 
     public Appointment(Patient patient) {
         SimpleDateFormat format = new SimpleDateFormat("HH:mm dd/MM/yyyy");
@@ -19,73 +19,46 @@ public class Appointment {
         this.patient = patient;
         reasons = new ArrayList<>();
         measurementsTaken = new ArrayList<>();
-        notes = new HashSet<>();
+        notes = new ArrayList<>();
     }
 
     public void runAppointment() {
-        System.out.println("New Appointment");
+        System.out.println("New Appointment\n");
         //menu select
         Scanner scan = new Scanner(System.in);
-        int menuChoice = 0;
-        boolean choiceValid = false;
-        while (!choiceValid) {
-            try {
-                System.out.println("Enter number to select:\n1. Enter reasons for appointment\n2. Enter a new measurement\n3. Enter a new note");
-                menuChoice = IntegerChecker.IntegerInput(menuChoice, scan);
-                if (menuChoice == 1 || menuChoice == 2 || menuChoice == 3) {
-                    choiceValid = true;
-                }
-                else {
-                    System.out.println("Please enter a number from 1-3.");
-                }
-            } catch (Exception E) {
-                System.out.println("Please enter a number.");
-                scan.next();
-                menuChoice = 0;
-            }
-        }
-        
-        /* Could you put this switch case into a try catch as above and make the default output "please enter a number from 1-3", and the switch case catches an InputMismatchException
-         * like this...
-         */
-        
-//        try {
-//        	 switch (menuChoice) {
-//             case 1:
-//                 enterReason();
-//                 break;
-//             case 2:
-//                 enterMeasurement();
-//                 break;
-//             case 3:
-//                 enterNote();
-//                 break;
-//             default:
-//            	 System.out.println("Please enter a number from 1-3.");
-//                 break;
-//             }	
-//        }
-//        catch (InputMisMatchException e) {
-//        	System.out.println("Please enter a number");
-//        	scan.next();
-//        }
-        
+        boolean appointmentRunning = true;
+        while (appointmentRunning) {
+            String menuChoice = "0";
+            boolean choiceValid = false;
+            while (!choiceValid) {
+                System.out.println("Appointment - " + patient.getName());
+                System.out.println("Enter number to select:\n1. Enter reasons for appointment\n2. Enter a new measurement\n3. Enter a new note\n4. Finish appointment");
+                menuChoice = scan.nextLine();
 
-        //run menu choice
-        switch (menuChoice) {
-            case 1:
-                enterReason();
-                break;
-            case 2:
-                enterMeasurement();
-                break;
-            case 3:
-                enterNote();
-                break;
-            default:
-                break;
+                //run menu choice
+                switch (menuChoice) {
+                    case "1":
+                        enterReason();
+                        break;
+                    case "2":
+                        enterMeasurement();
+                        break;
+                    case "3":
+                        enterNote();
+                        break;
+                    case "4":
+                        appointmentRunning = false;
+                        choiceValid = true;
+                        System.out.println("Appointment Finished");
+                        break;
+                    default:
+                        System.out.println("Please enter a number from 1-4.");
+                        break;
+                }
             }
         }
+
+    }
 
         private void enterReason() {
             Scanner scan = new Scanner(System.in);
@@ -97,47 +70,107 @@ public class Appointment {
                     this.reasons.add(reason);
                 }
             }
-            printReasons();
+            printList("Reasons", this.reasons);
 
             int change = 0;
             System.out.println("Enter number to select:\n1. Delete a reason\n2. Edit a reason\n3. Confirm and Exit");
-            change = IntegerChecker.IntegerInput(change, scan);
+            change = Checker.IntegerInput(change);
             switch (change) {
                 case 1:
-                    printReasons();
+                    //delete reason
+                    printList("Reasons", this.reasons);
                     while (change != 0) {
                         System.out.println("Enter the number of the reason to delete (or 0 to stop): ");
-                        change = IntegerChecker.IntegerInput(change, scan);
-                        if (change != 0) {
+                        change = Checker.IntegerInput(change);
+                        if (change > 0 && change < reasons.size()) {
                             reasons.remove(change - 1);
                             System.out.println("Reason removed.\nCurrent Reasons:");
-                            printReasons();
+                            printList("Reasons", this.reasons);
                         }
+                        else if (change != 0) {
+                            System.out.println("Please enter a number within range.");
+                        }
+                        System.out.println("Reasons saved");
                     }
 
                     break;
                 case 2:
-                    printReasons();
-                    System.out.println("Enter the number of the reason to edit: ");
-                    change = scan.nextInt();
+                    //modify reason
+                    printList("Reasons", this.reasons);
+                    String newReason = "";
+                    while (change != 0) {
+                        System.out.println("Enter the number of the reason to edit (or 0 to stop): ");
+                        change = Checker.IntegerInput(change);
+                        if (change > 0 && change <= reasons.size()) {
+                            reasons.remove(change - 1);
+                            System.out.println("What would you like to change the reason to?");
+                            while (newReason.length() < 1) {
+                                newReason = scan.nextLine();
+                            }
+                            reasons.add(change - 1, newReason);
+                            System.out.println("Current Reasons: ");
+                            printList("Reasons", this.reasons);
+                        }
+                        else if (change != 0) {
+                            System.out.println("Please enter a number within range.");
+                        }
+                    }
+                    System.out.println("Reasons saved");
                     break;
                 case 3:
+                    //confirm reason list
                     System.out.println("Confirmed");
                     break;
             }
         }
-        private void printReasons() {
-            System.out.println("Reasons: ");
-            int i = 1;
-            for (String r : this.reasons) {
-                System.out.println(i + ". " + r);
-                i++;
+
+        private void printList(String title, ArrayList list) {
+            System.out.println(title + ":");
+            for (int i = 0; i < list.size(); i++) {
+                System.out.println((i + 1) + ". " + list.get(i));
             }
         }
 
         private void enterMeasurement() {
+            Measurement measure = new Measurement();
+            boolean takingMeasurements = true;
+            boolean inputValid = true;
+            String addAnother = "";
+            Scanner scan = new Scanner(System.in);
+
+            do {
+                if (inputValid == true) {
+                    measure.createMeasurement();
+                    measurementsTaken.add(measure);
+                }
+                System.out.println("Would you like to add another measurement?\n1. Add another\n2. Finished");
+                addAnother = scan.nextLine();
+                switch (addAnother) {
+                    case "1":
+                        inputValid = true;
+                        break;
+                    case "2":
+                        takingMeasurements = false;
+                        break;
+                    default:
+                        inputValid = false;
+                        System.out.println("Please enter a number from 1-2.");
+                        break;
+                }
+            } while (takingMeasurements);
         }
 
         private void enterNote() {
+            Scanner scan = new Scanner(System.in);
+            String note = "";
+            while (!note.equals("x")) {
+                System.out.println("Enter a note (or x to stop adding notes):");
+                note = scan.nextLine();
+                if (!note.equals("x")) {
+                    this.notes.add(note);
+                }
+            }
+            printList("Notes", this.notes);
         }
+
     }

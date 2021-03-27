@@ -7,7 +7,7 @@ import java.io.IOException;
 
 public class PatientManagementMain {
     public static void main(String[] args) throws IOException {
-        Appointment appointmentTest = new Appointment(new MedicalPatient("ABC123"));
+        Appointment appointmentTest = new Appointment(new MedicalPatient("Poppy","ABC123"));
         appointmentTest.runAppointment();
     }
 }
