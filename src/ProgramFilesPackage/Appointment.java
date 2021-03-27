@@ -44,6 +44,32 @@ public class Appointment {
                 menuChoice = 0;
             }
         }
+        
+        /* Could you put this switch case into a try catch as above and make the default output "please enter a number from 1-3", and the switch case catches an InputMismatchException
+         * like this...
+         */
+        
+//        try {
+//        	 switch (menuChoice) {
+//             case 1:
+//                 enterReason();
+//                 break;
+//             case 2:
+//                 enterMeasurement();
+//                 break;
+//             case 3:
+//                 enterNote();
+//                 break;
+//             default:
+//            	 System.out.println("Please enter a number from 1-3.");
+//                 break;
+//             }	
+//        }
+//        catch (InputMisMatchException e) {
+//        	System.out.println("Please enter a number");
+//        	scan.next();
+//        }
+        
 
         //run menu choice
         switch (menuChoice) {
