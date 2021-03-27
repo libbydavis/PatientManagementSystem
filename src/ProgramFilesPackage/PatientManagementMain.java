@@ -9,5 +9,8 @@ public class PatientManagementMain {
     public static void main(String[] args) throws IOException {
         Appointment appointmentTest = new Appointment(new MedicalPatient("Poppy","ABC123"));
         appointmentTest.runAppointment();
+        
+        // Testing ways to retrieve medicine 
+        // System.out.println(Medication.medicationList().get(0));
     }
 }
