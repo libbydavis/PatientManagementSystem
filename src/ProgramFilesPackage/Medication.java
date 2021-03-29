@@ -1,7 +1,16 @@
 package ProgramFilesPackage;
 
-import java.util.ArrayList;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
+import java.util.Scanner;
+
+import com.google.gson.Gson;
+
+import com.google.gson.reflect.TypeToken;
+import com.google.gson.stream.JsonReader;
 
 public class Medication {
     private String name;
@@ -9,7 +18,7 @@ public class Medication {
     private HashSet<String> sideEffects;
     private HashSet<String> conditions;
 	
-    public Medication(String name, Dosage dosage, HashSet<String> sideEffects, HashSet<String> conditions) 
+	public Medication(String name, Dosage dosage, HashSet<String> sideEffects, HashSet<String> conditions) 
     {
 		this.name = name;
 		this.dosage = dosage;
@@ -22,83 +31,77 @@ public class Medication {
 		return name;
 	}
 
-	public void setName(String name) 
-	{
-		this.name = name;
-	}
-
 	public Dosage getDosage() 
 	{
 		return dosage;
 	}
-
-	public void setDosage(Dosage dosage) 
-	{
+	
+    public void setDosage(Dosage dosage) 
+    {
 		this.dosage = dosage;
 	}
-
+    
 	public HashSet<String> getSideEffects() 
 	{
 		return sideEffects;
 	}
 
-	public void setSideEffects(HashSet<String> sideEffects) 
-	{
-		this.sideEffects = sideEffects;
-	}
 
 	public HashSet<String> getConditions() 
 	{
 		return conditions;
 	}
-
-	public void setConditions(HashSet<String> conditions) 
+	
+	/*
+	 * 
+	 */
+	public static HashMap<String, Medication> fileToHashMap() throws FileNotFoundException
 	{
-		this.conditions = conditions;
+		Gson gson = new Gson();
+		JsonReader jr = new JsonReader(new FileReader("src/ProgramFilesPackage/MedicationList.txt"));
+		HashMap<String, Medication> medList = gson.fromJson(jr, new TypeToken<HashMap<String, Medication>>(){}.getType()); // Converting  the JSON file into a HashMap object 
+		
+		return medList;
 	}
 	
-	/**
-	 	 *This method is supposed to be a storage for medicine, containing it's name, dosage, conditions, side effects etc. 
-	 	 *@return returns an Array List of medications 
-	 	 **/
-	public static ArrayList<Medication> medicationList()
+	/*
+	 * 
+	 */
+	public static void printMedInfo() throws FileNotFoundException
 	{
-		// The variable that stores all the medication.
-		ArrayList<Medication> meds = new ArrayList<Medication>();
+		Scanner scan = new Scanner(System.in);
+		printMedList(); // Retrieves the names of all medication in the Json file.
+		// Scans for user input, asking the doctor what details of the medication they want to see.
+		System.out.println("\nEnter the number of the medication you want to see details of");
+		String uInput = "";
+		uInput = scan.nextLine();
 		
-		//Panadol Info 
-		HashSet<String> panadolSideEff = new HashSet<String>();
-		HashSet<String> panadolConditions = new HashSet<String>();
-		panadolConditions.add("Store in room temperature");
-		panadolConditions.add("Store out of children aged 5 and under's reach");
-		panadolSideEff.add("Nausea");
-		panadolSideEff.add("Lethargy");
-		panadolSideEff.add("Skin Rash");
+		while(!fileToHashMap().containsKey(uInput))
+		{	
+			System.out.println("Incorrect input, please try again");
+			uInput = scan.nextLine();
+		}
 		
-		//Ibuprofen Info
-		HashSet<String> ibuprofenSideEff = new HashSet<String>();
-		HashSet<String> ibuprofenConditions = new HashSet<String>();
-		ibuprofenConditions.add("Store in room temperature");
-		ibuprofenConditions.add("Store out of children aged 5 and under's reach");
-		ibuprofenSideEff.add("Difficulty Breathing");
-		ibuprofenSideEff.add("Blood in Vomit");
-		ibuprofenSideEff.add("Stomach Pain");
-	
-		// TODO: How would you specify dosage amount when it's liquids/tablets/powder e.g, 2.5ml, 2.5mg, 3 tablets etc. - should I bother with this?
-		meds.add(new Medication("Panadol", new Dosage(2.5, "After every meal for 3 days"), panadolSideEff, panadolConditions));
-		meds.add(new Medication("Ibuprofen", new Dosage(3, "Once a day for a week"), ibuprofenSideEff, ibuprofenConditions));
-		
-		return meds;
+		System.out.println(fileToHashMap().get(uInput));
+		scan.close();
 	}
 	
-	//TODO: Make a method to retrieve medication information by looking it up by name.
-	//TODO: Make a method to show a list of all the medication that the doctor can pick from.
+	/*
+	 * 
+	 */
+	public static void printMedList() throws FileNotFoundException
+	{
+		int medNo = 1;
+		System.out.println("List of all Medication:");
+		for(Map.Entry<String, Medication> s : fileToHashMap().entrySet())
+		{
+			System.out.println(medNo + ". " + s.getValue().getName());
+			medNo++;
+		}
+	}
 
 	public String toString() 
 	{
 		return "Medication Name: " +name + "\n" +dosage + "\nSide Effects: " + sideEffects + "\nConditions: " + conditions;		
 	}
-    
-    
-    
 }
