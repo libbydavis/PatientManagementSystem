@@ -91,12 +91,10 @@ public class Medication {
 	 */
 	public static void printMedList() throws FileNotFoundException
 	{
-		int medNo = 1;
 		System.out.println("List of all Medication:");
 		for(Map.Entry<String, Medication> s : fileToHashMap().entrySet())
 		{
-			System.out.println(medNo + ". " + s.getValue().getName());
-			medNo++;
+			System.out.println(s.getKey() + ". " + s.getValue().getName());
 		}
 	}
 
