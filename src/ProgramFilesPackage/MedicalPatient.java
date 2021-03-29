@@ -12,13 +12,17 @@ public class MedicalPatient implements Patient{
     private HashSet<Measurement> measurements;
     private ArrayList<Prescription> prescriptions;
 
-    public MedicalPatient(String name, String nhi) {
+    public MedicalPatient(String nhi) {
         NHI = nhi;
-        this.name = name;
     }
 
     @Override
     public String getName() {
         return name;
+    }
+
+    @Override
+    public void findPatientInDatabase() {
+
     }
 }

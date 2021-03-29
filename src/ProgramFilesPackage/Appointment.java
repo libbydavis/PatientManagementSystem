@@ -23,7 +23,7 @@ public class Appointment {
     }
 
     public void runAppointment() {
-        System.out.println("New Appointment\n");
+        System.out.println("\nNew Appointment\n");
         //menu select
         Scanner scan = new Scanner(System.in);
         boolean appointmentRunning = true;
