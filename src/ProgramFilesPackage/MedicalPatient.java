@@ -5,6 +5,7 @@ import com.google.gson.Gson;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Scanner;
 
 public class MedicalPatient implements Patient{
     private String fName;
@@ -24,6 +25,13 @@ public class MedicalPatient implements Patient{
         prescriptions = new ArrayList<>();
     }
 
+    public void setfName(String fName) {
+        this.fName = fName;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
 
     public static void testDatabaseIn() throws IOException {
         //using test data to see function with Gson
@@ -66,7 +74,74 @@ public class MedicalPatient implements Patient{
     }
 
     @Override
-    public void findPatientInDatabase() {
+    public Patient findPatientInDatabase(String nhi) throws IOException {
+        //get Patients from database
+        MedicalPatient[] allPatients = deserializePatients();
 
+        //find patient
+        Patient p1 = new MedicalPatient(nhi);
+        for (int i = 0; i < allPatients.length; i++) {
+            if (allPatients[i].NHI.equals(nhi)) {
+                p1 = allPatients[i];
+                return p1;
+            }
+        }
+        return p1;
     }
+
+    public void addPatient() throws IOException {
+        Scanner scan = new Scanner(System.in);
+        System.out.println("Please enter the NHI of the new patient: ");
+        String nhi = scan.nextLine();
+        MedicalPatient currentPatient = new MedicalPatient(nhi);
+
+        //get details
+        //name
+        System.out.println("Name:");
+        String name = scan.nextLine();
+        currentPatient.setfName(name);
+
+        //age
+        System.out.println("Age:");
+        int age = 0;
+        age = Checker.IntegerInput(age);
+        currentPatient.setAge(age);
+
+        //read in all patients to memory
+        MedicalPatient[] allPatients = deserializePatients();
+
+        //create bigger array
+        MedicalPatient[] newPatientList = new MedicalPatient[allPatients.length + 1];
+        for (int i = 0; i < allPatients.length; i++) {
+            newPatientList[i] = allPatients[i];
+        }
+
+        //add patient to array
+        newPatientList[newPatientList.length - 1] = currentPatient;
+
+        //save patients to database
+        savePatientsToDatabase(newPatientList);
+        System.out.println("Saved Patient");
+    }
+
+    public void savePatientsToDatabase(MedicalPatient[] listPatients) throws IOException {
+        Gson gson = new Gson();
+        String json = gson.toJson(listPatients);
+
+        BufferedWriter bWrite = new BufferedWriter(new FileWriter(new File("src/ProgramFilesPackage/Database.txt")));
+        bWrite.write(json);
+        bWrite.close();
+    }
+
+    public MedicalPatient[] deserializePatients() throws IOException {
+        //read in all patients
+        BufferedReader bread = new BufferedReader(new FileReader(new File("src/ProgramFilesPackage/Database.txt")));
+        Gson gson = new Gson();
+        String allText = bread.readLine();
+        MedicalPatient[] patientsList = gson.fromJson(allText, MedicalPatient[].class);
+        bread.close();
+
+        return patientsList;
+    }
+
 }

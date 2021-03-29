@@ -61,6 +61,7 @@ public class Appointment {
     }
 
         private void enterReason() {
+            //get reasons
             Scanner scan = new Scanner(System.in);
             String reason = "";
             while (!reason.equals("x")) {
@@ -72,6 +73,7 @@ public class Appointment {
             }
             printList("Reasons", this.reasons);
 
+            //modify or save reasons
             int change = 0;
             System.out.println("Enter number to select:\n1. Delete a reason\n2. Edit a reason\n3. Confirm and Exit");
             change = Checker.IntegerInput(change);

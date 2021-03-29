@@ -1,6 +1,8 @@
 package ProgramFilesPackage;
 
+import java.io.IOException;
+
 public interface Patient {
     String getName();
-    void findPatientInDatabase();
+    Patient findPatientInDatabase(String value) throws IOException;
 }

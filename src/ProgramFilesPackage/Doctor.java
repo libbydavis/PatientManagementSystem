@@ -21,7 +21,7 @@ public class Doctor implements User{
                     System.out.println("Enter NHI of the patient: ");
                     String currentNhi = scan.nextLine();
                     Patient currentPatient = new MedicalPatient(currentNhi);
-                    currentPatient.findPatientInDatabase();
+                    currentPatient = currentPatient.findPatientInDatabase(currentNhi);
                     Appointment currentAppointment = new Appointment(currentPatient);
                     currentAppointment.runAppointment();
                     break;
@@ -29,12 +29,13 @@ public class Doctor implements User{
                     System.out.println("prescription");
                     break;
                 case "3":
-                    System.out.println("add patient");
-                    MedicalPatient.testDatabaseIn();
+                    MedicalPatient addPatient = new MedicalPatient("currentNhi");
+                    addPatient.addPatient();
+                    //MedicalPatient.testDatabaseIn();
                     break;
                 case "4":
                     System.out.println("edit patient");
-                    MedicalPatient.testDatabaseOut();
+                    //MedicalPatient.testDatabaseOut();
                     break;
                 case "5":
                     runningUser = false;
