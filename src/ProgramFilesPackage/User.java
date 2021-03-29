@@ -1,5 +1,7 @@
 package ProgramFilesPackage;
 
+import java.io.IOException;
+
 public interface User {
-    void userMenu();
+    void userMenu() throws IOException;
 }

@@ -1,5 +1,6 @@
 package ProgramFilesPackage;
 
+import java.io.IOException;
 import java.util.Scanner;
 
 public class Doctor implements User{
@@ -7,7 +8,7 @@ public class Doctor implements User{
     int age;
 
     @Override
-    public void userMenu() {
+    public void userMenu() throws IOException {
         boolean runningUser = true;
         String input;
         Scanner scan = new Scanner(System.in);
@@ -29,9 +30,11 @@ public class Doctor implements User{
                     break;
                 case "3":
                     System.out.println("add patient");
+                    MedicalPatient.testDatabaseIn();
                     break;
                 case "4":
                     System.out.println("edit patient");
+                    MedicalPatient.testDatabaseOut();
                     break;
                 case "5":
                     runningUser = false;

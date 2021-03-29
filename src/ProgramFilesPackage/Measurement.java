@@ -13,6 +13,12 @@ public class Measurement {
 		units = "";
 	}
 
+	public Measurement(String name, Double measurement, String units) {
+		this.name = name;
+		this.measurement = measurement;
+		this.units = units;
+	}
+
 	public void createMeasurement() {
 		Scanner scan = new Scanner(System.in);
 
