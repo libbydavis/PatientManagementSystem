@@ -1,9 +1,15 @@
 package ProgramFilesPackage;
 
-public class Dosage {
-    
+public class Dosage 
+{  
 	double amount;
     String howOften;
+    
+    public Dosage()
+    {
+    	this.amount = 0.0;
+    	this.howOften = "UNDEFINED";
+    }
 	
     public Dosage(double amount, String howOften) 
     {
