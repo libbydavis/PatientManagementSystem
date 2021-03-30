@@ -9,19 +9,23 @@ import java.util.Scanner;
 
 public class MedicalPatient implements Patient{
     private String fName;
+    private String lName;
     private int age;
+    private String phoneNumber;
+    private String address;
     private final String NHI;
     private HashSet<MedicalCondition> conditions;
     private HashSet<Medication> currentMedications;
-    private HashSet<Measurement> measurements;
+    private ArrayList<Measurement> measurements;
     private ArrayList<Prescription> prescriptions;
+    private ArrayList<Appointment> appointmentsHistory;
 
 
     public MedicalPatient(String nhi) {
         NHI = nhi;
         conditions = new HashSet<>();
         currentMedications = new HashSet<>();
-        measurements = new HashSet<>();
+        measurements = new ArrayList<>();
         prescriptions = new ArrayList<>();
     }
 
@@ -29,8 +33,20 @@ public class MedicalPatient implements Patient{
         this.fName = fName;
     }
 
+    public void setlName(String lName) {
+        this.lName = lName;
+    }
+
     public void setAge(int age) {
         this.age = age;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public static void testDatabaseIn() throws IOException {
@@ -96,16 +112,58 @@ public class MedicalPatient implements Patient{
         MedicalPatient currentPatient = new MedicalPatient(nhi);
 
         //get details
-        //name
-        System.out.println("Name:");
-        String name = scan.nextLine();
-        currentPatient.setfName(name);
+        //first name
+        System.out.println("First name:");
+        String fName = scan.nextLine();
+        currentPatient.setfName(fName);
+
+        //last name
+        System.out.println("Last name:");
+        String lName = scan.nextLine();
+        currentPatient.setlName(lName);
 
         //age
         System.out.println("Age:");
         int age = 0;
         age = Checker.IntegerInput(age);
         currentPatient.setAge(age);
+
+        //phone number
+        System.out.println("Phone number:");
+        String phoneNumber = scan.nextLine();
+        currentPatient.setPhoneNumber(phoneNumber);
+
+        //address
+        System.out.println("Address:");
+        String address = scan.nextLine();
+        currentPatient.setAddress(address);
+
+        //add to conditions, etc.
+        String addChoice = "";
+        while (!addChoice.equals("4")) {
+            System.out.println("Would you like to add to any of these (enter number to select):\n1. Conditions\n2. Current Medications\n3. Measurements\n4. None");
+            addChoice = scan.nextLine();
+            switch (addChoice) {
+                case "1":
+                    MedicalCondition getConditions = new MedicalCondition();
+                    getConditions.enterConditions(currentPatient.conditions);
+                    break;
+                case "2":
+                    System.out.println("medications add");
+                    //add in medications
+                    break;
+                case "3":
+                    Measurement getMeasurements = new Measurement();
+                    getMeasurements.enterMeasurement(currentPatient.measurements);
+                    break;
+                case "4":
+                    break;
+                default:
+                    System.out.println("Please enter a number from 1-4.");
+                    break;
+            }
+        }
+
 
         //read in all patients to memory
         MedicalPatient[] allPatients = deserializePatients();

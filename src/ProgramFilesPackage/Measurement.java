@@ -1,5 +1,7 @@
 package ProgramFilesPackage;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Measurement {
@@ -34,4 +36,34 @@ public class Measurement {
 		System.out.println("Enter the units for this measurement: ");
 		units = scan.nextLine();
 	}
+
+	public void enterMeasurement(ArrayList measurementList) {
+		Measurement measure = new Measurement();
+		boolean takingMeasurements = true;
+		boolean inputValid = true;
+		String addAnother = "";
+		Scanner scan = new Scanner(System.in);
+
+		do {
+			if (inputValid == true) {
+				measure.createMeasurement();
+				measurementList.add(measure);
+			}
+			System.out.println("Would you like to add another measurement?\n1. Add another\n2. Finished");
+			addAnother = scan.nextLine();
+			switch (addAnother) {
+				case "1":
+					inputValid = true;
+					break;
+				case "2":
+					takingMeasurements = false;
+					break;
+				default:
+					inputValid = false;
+					System.out.println("Please enter a number from 1-2.");
+					break;
+			}
+		} while (takingMeasurements);
+	}
+
 }
