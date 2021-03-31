@@ -183,6 +183,7 @@ public class MedicalPatient implements Patient{
         System.out.println("Saved Patient");
     }
 
+
     public void listAllPatients() throws IOException {
         //get patients
         MedicalPatient[] allPatients = deserializePatients();

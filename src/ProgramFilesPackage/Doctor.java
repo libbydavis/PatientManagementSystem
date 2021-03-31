@@ -1,6 +1,7 @@
 package ProgramFilesPackage;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.Scanner;
 
 public class Doctor implements User{
@@ -51,5 +52,17 @@ public class Doctor implements User{
             }
         }
     }
+
+    /*
+    public static Object[] expandCapacity(Object[] oldArray) {
+        //create bigger array
+        Object[] newArray = new Array[oldArray.length + 1];
+        for (int i = 0; i < oldArray.length; i++) {
+            newArray[i] = oldArray[i];
+        }
+        return newArray;
+    }
+
+     */
 
 }

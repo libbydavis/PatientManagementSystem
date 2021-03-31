@@ -1,5 +1,8 @@
 package ProgramFilesPackage;
 
+import com.google.gson.Gson;
+
+import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -22,7 +25,7 @@ public class Appointment {
         notes = new ArrayList<>();
     }
 
-    public void runAppointment() {
+    public void runAppointment() throws IOException {
         System.out.println("\nNew Appointment\n");
         //show patient information
         this.patient.displayPatientDetails();
@@ -52,6 +55,7 @@ public class Appointment {
                     case "4":
                         appointmentRunning = false;
                         choiceValid = true;
+                        saveAppointment();
                         System.out.println("Appointment Finished");
                         break;
                     default:
@@ -150,5 +154,28 @@ public class Appointment {
             }
             printList("Notes", this.notes);
         }
+
+        private void saveAppointment() throws IOException {
+            BufferedReader bread = new BufferedReader(new FileReader(new File("src/ProgramFilesPackage/Appointments.txt")));
+            Gson gson = new Gson();
+            String allText = bread.readLine();
+            Appointment[] allAppointments = gson.fromJson(allText, Appointment[].class);
+            bread.close();
+
+            //bigger array
+            Appointment[] allAppointmentsNew = new Appointment[allAppointments.length + 1];
+            for (int i = 0; i < allAppointments.length; i++) {
+                allAppointmentsNew[i] = allAppointments[i];
+            }
+
+            allAppointmentsNew[allAppointmentsNew.length - 1] = this;
+
+            //save to database
+            String json = gson.toJson(allAppointmentsNew);
+            BufferedWriter bWrite = new BufferedWriter(new FileWriter(new File("src/ProgramFilesPackage/Appointments.txt")));
+            bWrite.write(json);
+            bWrite.close();
+        }
+
 
     }
