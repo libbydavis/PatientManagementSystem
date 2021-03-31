@@ -14,10 +14,14 @@ public class Doctor implements User{
         Scanner scan = new Scanner(System.in);
 
         while (runningUser) {
-            System.out.println("Enter a number to select:\n1. Start an appointment\n2. Create a prescription\n3. Add a patient\n4. Edit a patient's details\n5. Exit program");
+            System.out.println("Enter a number to select:\n1. See a list of all patients\n2. Start an appointment\n3. Create a prescription\n4. Add a patient\n5. Edit a patient's details\n6. Exit program");
             input = scan.nextLine();
             switch (input) {
                 case "1":
+                    Patient allPatients = new MedicalPatient("allPatients");
+                    allPatients.listAllPatients();
+                    break;
+                case "2":
                     System.out.println("Enter NHI of the patient: ");
                     String currentNhi = scan.nextLine();
                     Patient currentPatient = new MedicalPatient(currentNhi);
@@ -25,19 +29,19 @@ public class Doctor implements User{
                     Appointment currentAppointment = new Appointment(currentPatient);
                     currentAppointment.runAppointment();
                     break;
-                case "2":
+                case "3":
                     System.out.println("prescription");
                     break;
-                case "3":
+                case "4":
                     MedicalPatient addPatient = new MedicalPatient("currentNhi");
                     addPatient.addPatient();
                     //MedicalPatient.testDatabaseIn();
                     break;
-                case "4":
+                case "5":
                     System.out.println("edit patient");
                     //MedicalPatient.testDatabaseOut();
                     break;
-                case "5":
+                case "6":
                     runningUser = false;
                     System.out.println("Exiting...");
                     break;

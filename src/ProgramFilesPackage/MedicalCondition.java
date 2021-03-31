@@ -17,6 +17,14 @@ public class MedicalCondition {
         this.description = description;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
     public void enterConditions(HashSet conditions) {
         Scanner scan = new Scanner(System.in);
         String name = "";

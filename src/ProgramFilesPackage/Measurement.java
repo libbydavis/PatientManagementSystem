@@ -21,6 +21,18 @@ public class Measurement {
 		this.units = units;
 	}
 
+	public String getName() {
+		return name;
+	}
+
+	public Double getMeasurement() {
+		return measurement;
+	}
+
+	public String getUnits() {
+		return units;
+	}
+
 	public void createMeasurement() {
 		Scanner scan = new Scanner(System.in);
 

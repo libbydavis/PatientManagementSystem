@@ -24,6 +24,8 @@ public class Appointment {
 
     public void runAppointment() {
         System.out.println("\nNew Appointment\n");
+        //show patient information
+        this.patient.displayPatientDetails();
         //menu select
         Scanner scan = new Scanner(System.in);
         boolean appointmentRunning = true;
@@ -31,7 +33,7 @@ public class Appointment {
             String menuChoice = "0";
             boolean choiceValid = false;
             while (!choiceValid) {
-                System.out.println("Appointment - " + patient.getName());
+                System.out.println("Appointment - ");
                 System.out.println("Enter number to select:\n1. Enter reasons for appointment\n2. Enter a new measurement\n3. Enter a new note\n4. Finish appointment");
                 menuChoice = scan.nextLine();
 

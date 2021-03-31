@@ -5,6 +5,7 @@ import com.google.gson.Gson;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Scanner;
 
 public class MedicalPatient implements Patient{
@@ -182,6 +183,24 @@ public class MedicalPatient implements Patient{
         System.out.println("Saved Patient");
     }
 
+    public void listAllPatients() throws IOException {
+        //get patients
+        MedicalPatient[] allPatients = deserializePatients();
+
+        //display patients
+        for (MedicalPatient mp : allPatients) {
+            System.out.println(mp.fName + " " + mp.lName + ", age: " + mp.age + ", NHI: " + mp.NHI);
+        }
+
+        //print more details
+        Scanner scan = new Scanner(System.in);
+        System.out.println("Would you like to see more details? Enter the NHI for the patient that you want to see more");
+        String patientNHI = scan.nextLine();
+        Patient more = new MedicalPatient(patientNHI);
+        more = findPatientInDatabase(patientNHI);
+        more.displayPatientDetails();
+    }
+
     public void savePatientsToDatabase(MedicalPatient[] listPatients) throws IOException {
         Gson gson = new Gson();
         String json = gson.toJson(listPatients);
@@ -202,4 +221,30 @@ public class MedicalPatient implements Patient{
         return patientsList;
     }
 
+    public void displayPatientDetails() {
+        System.out.println("NHI: " + this.NHI);
+        System.out.println("Name: " + this.fName + " " + this.lName);
+        System.out.println("Age: " + this.age);
+        System.out.println("Contact Details:\nPhone: " + this.phoneNumber + "\nAddress: " + this.address);
+        if (conditions.size() > 0) {
+            System.out.println("Conditions: ");
+            for (MedicalCondition med : conditions) {
+                System.out.println(med.getName() + ": " + med.getDescription());
+            }
+        }
+        if (currentMedications.size() > 0) {
+            System.out.println("Current Medications: ");
+            Iterator<Medication> iterate = currentMedications.iterator();
+            while(iterate.hasNext()){
+                System.out.println(iterate.next().getName() + ": " + iterate.next().getDosage());
+            }
+        }
+        if (measurements.size() > 0) {
+            System.out.println("Measurements: ");
+            Iterator<Measurement> iterator = measurements.iterator();
+            while(iterator.hasNext()){
+                System.out.println(iterator.next().getName() + ": " + iterator.next().getMeasurement() + iterator.next().getUnits());
+            }
+        }
+    }
 }
