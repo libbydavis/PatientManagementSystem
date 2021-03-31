@@ -196,8 +196,7 @@ public class MedicalPatient implements Patient{
         Scanner scan = new Scanner(System.in);
         System.out.println("Would you like to see more details? Enter the NHI for the patient that you want to see more");
         String patientNHI = scan.nextLine();
-        Patient more = new MedicalPatient(patientNHI);
-        more = findPatientInDatabase(patientNHI);
+        Patient more = findPatientInDatabase(patientNHI);
         more.displayPatientDetails();
     }
 
