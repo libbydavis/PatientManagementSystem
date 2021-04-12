@@ -50,6 +50,14 @@ public class MedicalPatient implements Patient{
         this.address = address;
     }
 
+    @Override
+    public void saveToAppointmentsHistory(Appointment a) throws IOException {
+        this.appointmentsHistory.add(a);
+
+        addPatientToDatabase(this);
+
+    }
+
     public static void testDatabaseIn() throws IOException {
         //using test data to see function with Gson
         MedicalPatient p1 = new MedicalPatient("abc123");
@@ -164,8 +172,10 @@ public class MedicalPatient implements Patient{
                     break;
             }
         }
+        addPatientToDatabase(currentPatient);
+    }
 
-
+    public void addPatientToDatabase(MedicalPatient currentPatient) throws IOException {
         //read in all patients to memory
         MedicalPatient[] allPatients = deserializePatients();
 

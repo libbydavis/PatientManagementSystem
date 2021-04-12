@@ -156,6 +156,8 @@ public class Appointment {
         }
 
         private void saveAppointment() throws IOException {
+            this.patient.saveToAppointmentsHistory(this);
+
             BufferedReader bread = new BufferedReader(new FileReader(new File("src/ProgramFilesPackage/Appointments.txt")));
             Gson gson = new Gson();
             String allText = bread.readLine();
@@ -175,6 +177,7 @@ public class Appointment {
             BufferedWriter bWrite = new BufferedWriter(new FileWriter(new File("src/ProgramFilesPackage/Appointments.txt")));
             bWrite.write(json);
             bWrite.close();
+
         }
 
 
