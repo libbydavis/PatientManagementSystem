@@ -2,23 +2,27 @@ package ProgramFilesPackage;
 
 public class Dosage 
 {  
-	double amount;
+    double amount;
     String howOften;
-    
-    public Dosage()
-    {
-    	this.amount = 0.0;
-    	this.howOften = "UNDEFINED";
-    }
-	
-    public Dosage(double amount, String howOften) 
-    {
-		this.amount = amount;
-		this.howOften = howOften;
-	}
 
-	public String toString() 
-	{
-		return "Dosage amount: " +amount + ", Frequency: " + howOften;
-	}   
+    public Dosage() 
+    {
+        setAmount(0.0);
+        setHowOften("UNDEFINED");
+    }
+    
+    public void setAmount(double amount) 
+    {
+        this.amount = amount;
+    }
+    
+    public void setHowOften(String howOften) 
+    {
+        this.howOften = howOften;
+    }
+    
+    public String toString() 
+    {
+        return "Dosage amount: " + amount + ", Frequency: " + howOften;
+    }
 }
