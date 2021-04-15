@@ -9,7 +9,7 @@ public class PatientManagementMain {
     public static void main(String[] args) throws IOException {
         System.out.println("Welcome to The Patient Management System");
         User userStart = new Doctor();
-        //userStart.userMenu();
+        userStart.userMenu();
         
         // Testing ways to retrieve medicine 
         Medication.printMedInfo();  

@@ -246,14 +246,16 @@ public class MedicalPatient implements Patient{
             System.out.println("Current Medications: ");
             Iterator<Medication> iterate = currentMedications.iterator();
             while(iterate.hasNext()){
-                System.out.println(iterate.next().getName() + ": " + iterate.next().getDosage());
+                Medication thisOne = iterate.next();
+                System.out.println(thisOne.getName() + ": " + thisOne.getDosage());
             }
         }
         if (measurements.size() > 0) {
             System.out.println("Measurements: ");
             Iterator<Measurement> iterator = measurements.iterator();
             while(iterator.hasNext()){
-                System.out.println(iterator.next().getName() + ": " + iterator.next().getMeasurement() + iterator.next().getUnits());
+                Measurement thisOne = iterator.next();
+                System.out.println(thisOne.getName() + ": " + thisOne.getMeasurement() + thisOne.getUnits());
             }
         }
     }
