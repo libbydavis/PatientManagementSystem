@@ -32,7 +32,7 @@ public class Doctor implements User{
                     currentAppointment.runAppointment();
                     break;
                 case "3":
-                    Prescription newPresc = generatePrescription();
+                    Prescription.generatePrescription();
                     break;
                 case "4":
                     MedicalPatient addPatient = new MedicalPatient("currentNhi");
