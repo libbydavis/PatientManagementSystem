@@ -28,6 +28,7 @@ public class MedicalPatient implements Patient{
         currentMedications = new HashSet<>();
         measurements = new ArrayList<>();
         prescriptions = new ArrayList<>();
+        appointmentsHistory = new ArrayList<>();
     }
 
     public void setfName(String fName) {
@@ -48,6 +49,15 @@ public class MedicalPatient implements Patient{
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    @Override
+    public void saveToAppointmentsHistory(Appointment a) throws IOException {
+        this.appointmentsHistory.add(a);
+
+        replacePatient(this);
+        //addPatientToDatabase(this);
+
     }
 
     public static void testDatabaseIn() throws IOException {
@@ -164,7 +174,39 @@ public class MedicalPatient implements Patient{
                     break;
             }
         }
+<<<<<<< HEAD
         
+=======
+        addPatientToDatabase(currentPatient);
+    }
+
+    public void replacePatient(MedicalPatient patientReplace) throws IOException {
+        //read in all patients to memory
+        MedicalPatient[] allPatients = deserializePatients();
+
+        //find matching item
+        int removeIndex = -1;
+        int i = 0;
+        while (removeIndex == -1){
+            if (allPatients[i].NHI.equals(patientReplace.NHI)) {
+                removeIndex = i;
+            }
+            else if ((i + 1) >= allPatients.length) {
+                removeIndex = 0;
+            }
+            i++;
+        }
+        //replace
+        allPatients[removeIndex] = patientReplace;
+
+        //add back to database
+        savePatientsToDatabase(allPatients);
+        System.out.println("Saved to Database");
+
+    }
+
+    public void addPatientToDatabase(MedicalPatient currentPatient) throws IOException {
+>>>>>>> 4c52ecce1ecd1d9a7a06807caf61c307220662a9
         //read in all patients to memory
         MedicalPatient[] allPatients = deserializePatients();
 
@@ -182,6 +224,7 @@ public class MedicalPatient implements Patient{
         System.out.println("Saved Patient");
     }
 
+
     public void listAllPatients() throws IOException {
         //get patients
         MedicalPatient[] allPatients = deserializePatients();
@@ -195,8 +238,7 @@ public class MedicalPatient implements Patient{
         Scanner scan = new Scanner(System.in);
         System.out.println("Would you like to see more details? Enter the NHI for the patient that you want to see more");
         String patientNHI = scan.nextLine();
-        Patient more = new MedicalPatient(patientNHI);
-        more = findPatientInDatabase(patientNHI);
+        Patient more = findPatientInDatabase(patientNHI);
         more.displayPatientDetails();
         
         // different way to print more details so doctor can see details for every patient if he wants to and doesn't stop after he's seen one patient.
@@ -257,14 +299,16 @@ public class MedicalPatient implements Patient{
             System.out.println("Current Medications: ");
             Iterator<Medication> iterate = currentMedications.iterator();
             while(iterate.hasNext()){
-                System.out.println(iterate.next().getName() + ": " + iterate.next().getDosage());
+                Medication thisOne = iterate.next();
+                System.out.println(thisOne.getName() + ": " + thisOne.getDosage());
             }
         }
         if (measurements.size() > 0) {
             System.out.println("Measurements: ");
             Iterator<Measurement> iterator = measurements.iterator();
             while(iterator.hasNext()){
-                System.out.println(iterator.next().getName() + ": " + iterator.next().getMeasurement() + iterator.next().getUnits());
+                Measurement thisOne = iterator.next();
+                System.out.println(thisOne.getName() + ": " + thisOne.getMeasurement() + thisOne.getUnits());
             }
         }
     }
