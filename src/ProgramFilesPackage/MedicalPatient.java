@@ -28,6 +28,7 @@ public class MedicalPatient implements Patient{
         currentMedications = new HashSet<>();
         measurements = new ArrayList<>();
         prescriptions = new ArrayList<>();
+        appointmentsHistory = new ArrayList<>();
     }
 
     public void setfName(String fName) {
@@ -54,7 +55,8 @@ public class MedicalPatient implements Patient{
     public void saveToAppointmentsHistory(Appointment a) throws IOException {
         this.appointmentsHistory.add(a);
 
-        addPatientToDatabase(this);
+        replacePatient(this);
+        //addPatientToDatabase(this);
 
     }
 
@@ -173,6 +175,31 @@ public class MedicalPatient implements Patient{
             }
         }
         addPatientToDatabase(currentPatient);
+    }
+
+    public void replacePatient(MedicalPatient patientReplace) throws IOException {
+        //read in all patients to memory
+        MedicalPatient[] allPatients = deserializePatients();
+
+        //find matching item
+        int removeIndex = -1;
+        int i = 0;
+        while (removeIndex == -1){
+            if (allPatients[i].NHI.equals(patientReplace.NHI)) {
+                removeIndex = i;
+            }
+            else if ((i + 1) >= allPatients.length) {
+                removeIndex = 0;
+            }
+            i++;
+        }
+        //replace
+        allPatients[removeIndex] = patientReplace;
+
+        //add back to database
+        savePatientsToDatabase(allPatients);
+        System.out.println("Saved to Database");
+
     }
 
     public void addPatientToDatabase(MedicalPatient currentPatient) throws IOException {

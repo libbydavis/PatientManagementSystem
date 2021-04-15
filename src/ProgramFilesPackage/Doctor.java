@@ -27,8 +27,8 @@ public class Doctor implements User{
                     String currentNhi = scan.nextLine();
                     Patient currentPatient = new MedicalPatient(currentNhi);
                     currentPatient = currentPatient.findPatientInDatabase(currentNhi);
-                    Appointment currentAppointment = new Appointment(currentPatient);
-                    currentAppointment.runAppointment();
+                    Appointment currentAppointment = new Appointment();
+                    currentAppointment.runAppointment(currentPatient);
                     break;
                 case "3":
                     System.out.println("prescription");

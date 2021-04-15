@@ -11,24 +11,38 @@ import java.util.Scanner;
 
 public class Appointment {
     private Date date;
-    private Patient patient;
     private ArrayList<String> reasons;
     private ArrayList<Measurement> measurementsTaken;
     private ArrayList<String> notes;
 
-    public Appointment(Patient patient) {
+    public Appointment() {
         SimpleDateFormat format = new SimpleDateFormat("HH:mm dd/MM/yyyy");
         date = new Date();
-        this.patient = patient;
         reasons = new ArrayList<>();
         measurementsTaken = new ArrayList<>();
         notes = new ArrayList<>();
     }
 
-    public void runAppointment() throws IOException {
+    public Date getDate() {
+        return date;
+    }
+
+    public ArrayList<String> getReasons() {
+        return reasons;
+    }
+
+    public ArrayList<Measurement> getMeasurementsTaken() {
+        return measurementsTaken;
+    }
+
+    public ArrayList<String> getNotes() {
+        return notes;
+    }
+
+    public void runAppointment(Patient patient) throws IOException {
         System.out.println("\nNew Appointment\n");
         //show patient information
-        this.patient.displayPatientDetails();
+        patient.displayPatientDetails();
         //menu select
         Scanner scan = new Scanner(System.in);
         boolean appointmentRunning = true;
@@ -55,7 +69,8 @@ public class Appointment {
                     case "4":
                         appointmentRunning = false;
                         choiceValid = true;
-                        saveAppointment();
+                        //saveAppointment();
+                        patient.saveToAppointmentsHistory(this);
                         System.out.println("Appointment Finished");
                         break;
                     default:
@@ -155,10 +170,11 @@ public class Appointment {
             printList("Notes", this.notes);
         }
 
+        /*
         private void saveAppointment() throws IOException {
             this.patient.saveToAppointmentsHistory(this);
 
-            BufferedReader bread = new BufferedReader(new FileReader(new File("src/ProgramFilesPackage/Appointments.txt")));
+            BufferedReader bread = new BufferedReader(new FileReader(new File("src/ProgramFilesPackage/NullAppointments.txt")));
             Gson gson = new Gson();
             String allText = bread.readLine();
             Appointment[] allAppointments = gson.fromJson(allText, Appointment[].class);
@@ -174,11 +190,13 @@ public class Appointment {
 
             //save to database
             String json = gson.toJson(allAppointmentsNew);
-            BufferedWriter bWrite = new BufferedWriter(new FileWriter(new File("src/ProgramFilesPackage/Appointments.txt")));
+            BufferedWriter bWrite = new BufferedWriter(new FileWriter(new File("src/ProgramFilesPackage/NullAppointments.txt")));
             bWrite.write(json);
             bWrite.close();
 
         }
+
+         */
 
 
     }
