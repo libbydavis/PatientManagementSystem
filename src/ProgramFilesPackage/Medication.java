@@ -15,7 +15,8 @@ import com.google.gson.stream.JsonWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 
-public class Medication {
+public class Medication 
+{
 
     private String name;
     private Dosage dosage;
@@ -56,6 +57,16 @@ public class Medication {
     }
     /**
      * 
+     * @param meds
+     * @return
+     * @throws FileNotFoundException 
+     */
+    public static Medication getMeds(String meds) throws FileNotFoundException 
+    {
+       return Medication.fileToHashMap().get(meds);
+    }
+    /**
+     * 
      * @return
      * @throws FileNotFoundException 
      */
@@ -74,20 +85,28 @@ public class Medication {
     public static void printMedInfo() throws FileNotFoundException 
     {
         Scanner scan = new Scanner(System.in);
-        printMedList(); // Retrieves the names of all medication in the Json file.
+         printMedList(); // Retrieves the names of all medication in the Json file.
+            
         // Scans for user input, asking the doctor what details of the medication they want to see.
-        System.out.println("\nEnter the number of the medication you want to see details of");
         String uInput = "";
-        uInput = scan.nextLine();
-
-        while (!fileToHashMap().containsKey(uInput)) 
+        while(!uInput.equalsIgnoreCase("x"))
         {
-            System.out.println("Incorrect input, please try again");
+            System.out.println("\nEnter the MedNo# of the medication you want to see details of: (x) to exit");
             uInput = scan.nextLine();
-        }
+            
+            if(uInput.equalsIgnoreCase("x"))
+            {
+                break;
+            }
+            
+            while(!fileToHashMap().containsKey(uInput)) 
+            {
+                System.out.println("Incorrect input, please try again");
+                uInput = scan.nextLine();
+            }
 
-        System.out.println(fileToHashMap().get(uInput));
-        scan.close();
+            System.out.println(fileToHashMap().get(uInput));
+        }
     }
     /**
      * 
@@ -95,10 +114,10 @@ public class Medication {
      */
     public static void printMedList() throws FileNotFoundException 
     {
-        System.out.println("List of all Medication:");
+        System.out.println("\nMedNo#:\tMedication Name:");
         for (Map.Entry<String, Medication> s : fileToHashMap().entrySet()) 
         {
-            System.out.println(s.getKey() + ". " + s.getValue().getName());
+            System.out.println(" (" + s.getKey() + ")\t  " + s.getValue().getName());
         }
     }
 

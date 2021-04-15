@@ -22,7 +22,7 @@ public class MedicalPatient implements Patient{
     private ArrayList<Appointment> appointmentsHistory;
 
 
-    public MedicalPatient(String nhi) {
+    public MedicalPatient(String nhi) { 
         NHI = nhi;
         conditions = new HashSet<>();
         currentMedications = new HashSet<>();
@@ -164,8 +164,7 @@ public class MedicalPatient implements Patient{
                     break;
             }
         }
-
-
+        
         //read in all patients to memory
         MedicalPatient[] allPatients = deserializePatients();
 
@@ -199,6 +198,28 @@ public class MedicalPatient implements Patient{
         Patient more = new MedicalPatient(patientNHI);
         more = findPatientInDatabase(patientNHI);
         more.displayPatientDetails();
+        
+        // different way to print more details so doctor can see details for every patient if he wants to and doesn't stop after he's seen one patient.
+        // this way it would allow them to prescribe the patient based on their conditions and the medicine's conditions etc.
+        /**
+        *   Scanner scan = new Scanner(System.in);
+            String patientNHI = "";
+            boolean quit = true;
+            while(quit)
+            {
+                System.out.println("Would you like to see more details? Enter the NHI for the patient that you want to see more (press x to exit)");
+                patientNHI = scan.nextLine();
+
+                if(patientNHI.equalsIgnoreCase("x"))
+                {
+                    quit = false;
+                }
+
+                Patient more = new MedicalPatient(patientNHI);
+                more = findPatientInDatabase(patientNHI);
+                more.displayPatientDetails();
+            }
+        */
     }
 
     public void savePatientsToDatabase(MedicalPatient[] listPatients) throws IOException {

@@ -6,9 +6,11 @@ import java.util.Scanner;
 public class Doctor implements User{
     String name;
     int age;
-
+    
+    // Need a doctor constructor and a getter for the doctor's name so their name can be added to prescriptions.
     @Override
-    public void userMenu() throws IOException {
+    public void userMenu() throws IOException 
+    {
         boolean runningUser = true;
         String input;
         Scanner scan = new Scanner(System.in);
@@ -30,7 +32,7 @@ public class Doctor implements User{
                     currentAppointment.runAppointment();
                     break;
                 case "3":
-                    System.out.println("prescription");
+                    Prescription newPresc = generatePrescription();
                     break;
                 case "4":
                     MedicalPatient addPatient = new MedicalPatient("currentNhi");
