@@ -51,6 +51,15 @@ public class MedicalPatient implements Patient{
         this.address = address;
     }
 
+    public boolean validateNHI(String nhi) throws IOException {
+        Patient patient = findPatientInDatabase(nhi);
+        if (patient.getName() != null) {
+            return true;
+        }
+        System.out.println("Please enter a valid NHI");
+        return false;
+    }
+
     @Override
     public void saveToAppointmentsHistory(Appointment a) throws IOException {
         this.appointmentsHistory.add(a);
@@ -234,10 +243,17 @@ public class MedicalPatient implements Patient{
 
         //print more details
         Scanner scan = new Scanner(System.in);
-        System.out.println("Would you like to see more details? Enter the NHI for the patient that you want to see more");
-        String patientNHI = scan.nextLine();
-        Patient more = findPatientInDatabase(patientNHI);
-        more.displayPatientDetails();
+        boolean validNHI = false;
+        String patientNHI = "";
+        while (validNHI != true && !patientNHI.equals("x")) {
+            System.out.println("Would you like to see more details? Enter the NHI for the patient that you want to see more (or x to exit)");
+            patientNHI = scan.nextLine();
+            validNHI = validateNHI(patientNHI);
+        }
+        if (!patientNHI.equals("x")) {
+            Patient more = findPatientInDatabase(patientNHI);
+            more.displayPatientDetails();
+        }
         
         // different way to print more details so doctor can see details for every patient if he wants to and doesn't stop after he's seen one patient.
         // this way it would allow them to prescribe the patient based on their conditions and the medicine's conditions etc.
