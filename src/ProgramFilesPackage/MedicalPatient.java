@@ -174,9 +174,7 @@ public class MedicalPatient implements Patient{
                     break;
             }
         }
-<<<<<<< HEAD
         
-=======
         addPatientToDatabase(currentPatient);
     }
 
@@ -206,7 +204,7 @@ public class MedicalPatient implements Patient{
     }
 
     public void addPatientToDatabase(MedicalPatient currentPatient) throws IOException {
->>>>>>> 4c52ecce1ecd1d9a7a06807caf61c307220662a9
+
         //read in all patients to memory
         MedicalPatient[] allPatients = deserializePatients();
 
