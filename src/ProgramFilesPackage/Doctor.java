@@ -25,9 +25,14 @@ public class Doctor implements User{
                     allPatients.listAllPatients();
                     break;
                 case "2":
-                    System.out.println("Enter NHI of the patient: ");
-                    String currentNhi = scan.nextLine();
-                    Patient currentPatient = new MedicalPatient(currentNhi);
+                    boolean valid = false;
+                    Patient currentPatient = new MedicalPatient("");
+                    String currentNhi = "";
+                    while(!valid) {
+                        System.out.println("Enter NHI of the patient: ");
+                        currentNhi = scan.nextLine();
+                        valid = currentPatient.validateNHI(currentNhi);
+                    }
                     currentPatient = currentPatient.findPatientInDatabase(currentNhi);
                     Appointment currentAppointment = new Appointment();
                     currentAppointment.runAppointment(currentPatient);

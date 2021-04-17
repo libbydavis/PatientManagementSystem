@@ -60,13 +60,28 @@ public class MedicalPatient implements Patient{
         return false;
     }
 
+    public String getValidNHI() {
+        Scanner scan = new Scanner(System.in);
+        boolean valid = false;
+        String nhi = "";
+        while (!valid) {
+            System.out.println("Please enter the NHI of the next patient: ");
+            nhi = scan.next();
+            if (nhi.length() == 6) {
+                valid = true;
+            }
+            else {
+                System.out.println("Please enter a valid NHI");
+            }
+        }
+        return nhi;
+    }
+
     @Override
     public void saveToAppointmentsHistory(Appointment a) throws IOException {
         this.appointmentsHistory.add(a);
 
         replacePatient(this);
-        //addPatientToDatabase(this);
-
     }
 
     public static void testDatabaseIn() throws IOException {
@@ -126,12 +141,11 @@ public class MedicalPatient implements Patient{
     }
 
     public void addPatient() throws IOException {
-        Scanner scan = new Scanner(System.in);
-        System.out.println("Please enter the NHI of the new patient: ");
-        String nhi = scan.nextLine();
+        String nhi = getValidNHI();
         MedicalPatient currentPatient = new MedicalPatient(nhi);
 
         //get details
+        Scanner scan = new Scanner(System.in);
         //first name
         System.out.println("First name:");
         String fName = scan.nextLine();
@@ -245,14 +259,19 @@ public class MedicalPatient implements Patient{
         Scanner scan = new Scanner(System.in);
         boolean validNHI = false;
         String patientNHI = "";
-        while (validNHI != true && !patientNHI.equals("x")) {
-            System.out.println("Would you like to see more details? Enter the NHI for the patient that you want to see more (or x to exit)");
-            patientNHI = scan.nextLine();
-            validNHI = validateNHI(patientNHI);
-        }
-        if (!patientNHI.equals("x")) {
-            Patient more = findPatientInDatabase(patientNHI);
-            more.displayPatientDetails();
+        while (!patientNHI.equals("x")) {
+            System.out.println("Would you like to see more details?");
+            while (!validNHI && !patientNHI.equals("x")) {
+                System.out.println("Enter the NHI for the patient that you want to see more (or x to exit)");
+                patientNHI = scan.nextLine();
+                if (!patientNHI.equals("x"))
+                    validNHI = validateNHI(patientNHI);
+            }
+            if (!patientNHI.equals("x")) {
+                Patient more = findPatientInDatabase(patientNHI);
+                more.displayPatientDetails();
+                validNHI = false;
+            }
         }
         
         // different way to print more details so doctor can see details for every patient if he wants to and doesn't stop after he's seen one patient.

@@ -8,4 +8,5 @@ public interface Patient {
     void displayPatientDetails();
     void listAllPatients() throws IOException;
     void saveToAppointmentsHistory(Appointment a) throws IOException;
+    boolean validateNHI(String nhi) throws IOException;
 }
