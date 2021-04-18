@@ -170,33 +170,5 @@ public class Appointment {
             printList("Notes", this.notes);
         }
 
-        /*
-        private void saveAppointment() throws IOException {
-            this.patient.saveToAppointmentsHistory(this);
-
-            BufferedReader bread = new BufferedReader(new FileReader(new File("src/ProgramFilesPackage/NullAppointments.txt")));
-            Gson gson = new Gson();
-            String allText = bread.readLine();
-            Appointment[] allAppointments = gson.fromJson(allText, Appointment[].class);
-            bread.close();
-
-            //bigger array
-            Appointment[] allAppointmentsNew = new Appointment[allAppointments.length + 1];
-            for (int i = 0; i < allAppointments.length; i++) {
-                allAppointmentsNew[i] = allAppointments[i];
-            }
-
-            allAppointmentsNew[allAppointmentsNew.length - 1] = this;
-
-            //save to database
-            String json = gson.toJson(allAppointmentsNew);
-            BufferedWriter bWrite = new BufferedWriter(new FileWriter(new File("src/ProgramFilesPackage/NullAppointments.txt")));
-            bWrite.write(json);
-            bWrite.close();
-
-        }
-
-         */
-
 
     }
