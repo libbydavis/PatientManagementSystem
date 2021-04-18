@@ -93,58 +93,67 @@ public class Appointment {
                     this.reasons.add(reason);
                 }
             }
-            printList("Reasons", this.reasons);
 
             //modify or save reasons
-            int change = 0;
-            System.out.println("Enter number to select:\n1. Delete a reason\n2. Edit a reason\n3. Confirm and Exit");
-            change = Checker.IntegerInput(change);
-            switch (change) {
-                case 1:
-                    //delete reason
-                    printList("Reasons", this.reasons);
-                    while (change != 0) {
-                        System.out.println("Enter the number of the reason to delete (or 0 to stop): ");
-                        change = Checker.IntegerInput(change);
-                        if (change > 0 && change < reasons.size()) {
-                            reasons.remove(change - 1);
-                            System.out.println("Reason removed.\nCurrent Reasons:");
-                            printList("Reasons", this.reasons);
+            int menuSelect = 0;
+            int change = -1;
+            while (menuSelect != 3) {
+                printList("Reasons", this.reasons);
+                while (menuSelect != 1 && menuSelect != 2 && menuSelect != 3) {
+                    System.out.println("Enter number to select:\n1. Delete a reason\n2. Edit a reason\n3. Confirm and Exit");
+                    menuSelect = Checker.IntegerInput(menuSelect);
+                }
+
+                switch (menuSelect) {
+                    case 1:
+                        //delete reason
+                        printList("Reasons", this.reasons);
+                        while (change != 0) {
+                            System.out.println("Enter the number of the reason to delete (or 0 to stop): ");
+                            change = Checker.IntegerInput(change);
+                            if (change > 0 && change <= reasons.size()) {
+                                reasons.remove(change - 1);
+                                System.out.println("Reason removed.\nCurrent Reasons:");
+                                printList("Reasons", this.reasons);
+                            } else if (change != 0) {
+                                System.out.println("Please enter a number within range.");
+                            }
                         }
-                        else if (change != 0) {
-                            System.out.println("Please enter a number within range.");
+                        //reset variables
+                        change = -1;
+                        menuSelect = -1;
+                        break;
+                    case 2:
+                        //modify reason
+                        printList("Reasons", this.reasons);
+                        String newReason = "";
+                        while (change != 0) {
+                            System.out.println("Enter the number of the reason to edit (or 0 to stop): ");
+                            change = Checker.IntegerInput(change);
+                            if (change > 0 && change <= reasons.size()) {
+                                reasons.remove(change - 1);
+                                System.out.println("What would you like to change the reason to?");
+                                while (newReason.length() < 1) {
+                                    newReason = scan.nextLine();
+                                }
+                                reasons.add(change - 1, newReason);
+                                System.out.println("Current Reasons: ");
+                                printList("Reasons", this.reasons);
+                            } else if (change != 0) {
+                                System.out.println("Please enter a number within range.");
+                            }
                         }
                         System.out.println("Reasons saved");
-                    }
 
-                    break;
-                case 2:
-                    //modify reason
-                    printList("Reasons", this.reasons);
-                    String newReason = "";
-                    while (change != 0) {
-                        System.out.println("Enter the number of the reason to edit (or 0 to stop): ");
-                        change = Checker.IntegerInput(change);
-                        if (change > 0 && change <= reasons.size()) {
-                            reasons.remove(change - 1);
-                            System.out.println("What would you like to change the reason to?");
-                            while (newReason.length() < 1) {
-                                newReason = scan.nextLine();
-                            }
-                            reasons.add(change - 1, newReason);
-                            System.out.println("Current Reasons: ");
-                            printList("Reasons", this.reasons);
-                        }
-                        else if (change != 0) {
-                            System.out.println("Please enter a number within range.");
-                        }
-                    }
-                    System.out.println("Reasons saved");
-                    break;
-                case 3:
-                    //confirm reason list
-                    System.out.println("Confirmed");
-                    break;
+                        //reset variables
+                        change = -1;
+                        menuSelect = -1;
+                        break;
+                    case 3:
+                        //confirm reason list
+                        System.out.println("Confirmed");
+                        break;
+                }
             }
         }
 
