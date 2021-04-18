@@ -185,8 +185,16 @@ public class MedicalPatient implements Patient{
                     break;
             }
         }
-        
-        addPatientToDatabase(currentPatient);
+
+        currentPatient.displayPatientDetails();
+        System.out.println("Enter y to confirm or x to exit: ");
+        String confirm = scan.next();
+        if (confirm.equals("y")) {
+            addPatientToDatabase(currentPatient);
+        }
+        else if (confirm.equals("x")) {
+            System.out.println("Add Patient Cancelled");
+        }
     }
 
     /**
