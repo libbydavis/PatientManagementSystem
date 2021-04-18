@@ -51,6 +51,14 @@ public class MedicalPatient implements Patient{
         this.address = address;
     }
 
+    /**
+     * @author -LibbyDavis
+     * @param nhi
+     * @return boolean
+     * uses findPatientInDatabase() to return a new patient,
+     * checks if the patient is valid by checking if the details are null,
+     * prints error message if needed and returns true or false to show if the NHI was valid or not
+     */
     public boolean validateNHI(String nhi) throws IOException {
         Patient patient = findPatientInDatabase(nhi);
         if (patient.getName() != null) {
@@ -60,6 +68,11 @@ public class MedicalPatient implements Patient{
         return false;
     }
 
+    /**
+     * @author -LibbyDavis
+     * @return String
+     * gets an NHI input that fits the criteria
+     */
     public String getValidNHI() {
         Scanner scan = new Scanner(System.in);
         boolean valid = false;
@@ -84,46 +97,17 @@ public class MedicalPatient implements Patient{
         replacePatient(this);
     }
 
-    public static void testDatabaseIn() throws IOException {
-        //using test data to see function with Gson
-        MedicalPatient p1 = new MedicalPatient("abc123");
-        p1.fName = "Abby";
-        p1.age = 15;
-        p1.conditions.add(new MedicalCondition("Allergy", "anaphylaxis to peanuts"));
-
-        MedicalPatient p2 = new MedicalPatient("def456");
-        p2.fName = "David";
-        p2.age = 45;
-        p2.conditions.add(new MedicalCondition("Allergy", "anaphylaxis to peanuts"));
-        p2.measurements.add(new Measurement("Blood Pressure", 4.5, "bpm"));
-
-        BufferedWriter bwrite = new BufferedWriter(new FileWriter(new File("src/ProgramFilesPackage/Database.txt")));
-        Gson gson = new Gson();
-
-        String json = gson.toJson(p1);
-        bwrite.write(json);
-
-        json = gson.toJson(p2);
-        bwrite.write(json);
-
-        bwrite.close();
-    }
-
-    public static void testDatabaseOut() throws IOException {
-        //testing deserializing
-        BufferedReader bread = new BufferedReader(new FileReader(new File("src/ProgramFilesPackage/Database.txt")));
-        Gson gson = new Gson();
-        String allText = bread.readLine();
-
-        MedicalPatient[] p2 = gson.fromJson(allText, MedicalPatient[].class);
-        System.out.println("done");
-    }
-
     @Override
     public String getName() {
         return fName;
     }
 
+    /**
+     * @author -LibbyDavis
+     * @param nhi
+     * @return Patient
+     * gets array of all patients from database using deserializePatients(), then searches for the target NHI using a for loop
+     */
     @Override
     public Patient findPatientInDatabase(String nhi) throws IOException {
         //get Patients from database
@@ -140,6 +124,10 @@ public class MedicalPatient implements Patient{
         return p1;
     }
 
+    /**
+     * @author -LibbyDavis
+     * gets all information for a new patient, then saves it to the database using addPatientToDatabase()
+     */
     public void addPatient() throws IOException {
         String nhi = getValidNHI();
         MedicalPatient currentPatient = new MedicalPatient(nhi);
@@ -201,6 +189,14 @@ public class MedicalPatient implements Patient{
         addPatientToDatabase(currentPatient);
     }
 
+    /**
+     * @author -LibbyDavis
+     * @param patientReplace
+     * gets patients from database using deserializePatients() in the form of an array,
+     * then finds matching patient that is going to be replaced in the array,
+     * sets the matching patient in the array to the new patient,
+     * saves this using savePatientsToDatabase()
+     */
     public void replacePatient(MedicalPatient patientReplace) throws IOException {
         //read in all patients to memory
         MedicalPatient[] allPatients = deserializePatients();
@@ -226,6 +222,14 @@ public class MedicalPatient implements Patient{
 
     }
 
+    /**
+     * @author -LibbyDavis
+     * @param currentPatient
+     * @return void
+     * reads in patients into array from patient database using deserializePatients(),
+     * then adds new patient to array
+     * and then writes array back out to patient database file using savePatientsToDatabase()
+     */
     public void addPatientToDatabase(MedicalPatient currentPatient) throws IOException {
 
         //read in all patients to memory
@@ -246,6 +250,11 @@ public class MedicalPatient implements Patient{
     }
 
 
+    /**
+     * @author -LibbyDavis
+     * gets patients from database using deserializePatients() and then prints out basic details of every patient,
+     * then asks user if they want to see more details and uses displayPatientDetails() to print out all the details of a patient as needed
+     */
     public void listAllPatients() throws IOException {
         //get patients
         MedicalPatient[] allPatients = deserializePatients();
@@ -273,30 +282,15 @@ public class MedicalPatient implements Patient{
                 validNHI = false;
             }
         }
-        
-        // different way to print more details so doctor can see details for every patient if he wants to and doesn't stop after he's seen one patient.
-        // this way it would allow them to prescribe the patient based on their conditions and the medicine's conditions etc.
-        /**
-        *   Scanner scan = new Scanner(System.in);
-            String patientNHI = "";
-            boolean quit = true;
-            while(quit)
-            {
-                System.out.println("Would you like to see more details? Enter the NHI for the patient that you want to see more (press x to exit)");
-                patientNHI = scan.nextLine();
 
-                if(patientNHI.equalsIgnoreCase("x"))
-                {
-                    quit = false;
-                }
-
-                Patient more = new MedicalPatient(patientNHI);
-                more = findPatientInDatabase(patientNHI);
-                more.displayPatientDetails();
-            }
-        */
     }
 
+    /**
+     * @author -LibbyDavis
+     * @param listPatients
+     * @return void
+     * converts a MedicalPatient[] array to json and writes to the patient database
+     */
     public void savePatientsToDatabase(MedicalPatient[] listPatients) throws IOException {
         Gson gson = new Gson();
         String json = gson.toJson(listPatients);
@@ -306,6 +300,11 @@ public class MedicalPatient implements Patient{
         bWrite.close();
     }
 
+    /**
+     * @author -LibbyDavis
+     * @return MedicalPatient[]
+     * reads patient information from the database and converts it from json to an array to be used by other methods
+     */
     public MedicalPatient[] deserializePatients() throws IOException {
         //read in all patients
         BufferedReader bread = new BufferedReader(new FileReader(new File("src/ProgramFilesPackage/Database.txt")));
@@ -317,6 +316,10 @@ public class MedicalPatient implements Patient{
         return patientsList;
     }
 
+    /**
+     * @author -LibbyDavis
+     * displays all the patient details in an easy to read format
+     */
     public void displayPatientDetails() {
         System.out.println("NHI: " + this.NHI);
         System.out.println("Name: " + this.fName + " " + this.lName);
