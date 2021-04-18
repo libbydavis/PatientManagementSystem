@@ -7,4 +7,6 @@ public interface Patient {
     Patient findPatientInDatabase(String value) throws IOException;
     void displayPatientDetails();
     void listAllPatients() throws IOException;
+    void saveToAppointmentsHistory(Appointment a) throws IOException;
+    boolean validateNHI(String nhi) throws IOException;
 }

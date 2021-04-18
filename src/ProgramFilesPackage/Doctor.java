@@ -1,14 +1,17 @@
 package ProgramFilesPackage;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.Scanner;
 
 public class Doctor implements User{
     String name;
     int age;
-
+    
+    // Need a doctor constructor and a getter for the doctor's name so their name can be added to prescriptions.
     @Override
-    public void userMenu() throws IOException {
+    public void userMenu() throws IOException 
+    {
         boolean runningUser = true;
         String input;
         Scanner scan = new Scanner(System.in);
@@ -22,15 +25,20 @@ public class Doctor implements User{
                     allPatients.listAllPatients();
                     break;
                 case "2":
-                    System.out.println("Enter NHI of the patient: ");
-                    String currentNhi = scan.nextLine();
-                    Patient currentPatient = new MedicalPatient(currentNhi);
+                    boolean valid = false;
+                    Patient currentPatient = new MedicalPatient("");
+                    String currentNhi = "";
+                    while(!valid) {
+                        System.out.println("Enter NHI of the patient: ");
+                        currentNhi = scan.nextLine();
+                        valid = currentPatient.validateNHI(currentNhi);
+                    }
                     currentPatient = currentPatient.findPatientInDatabase(currentNhi);
-                    Appointment currentAppointment = new Appointment(currentPatient);
-                    currentAppointment.runAppointment();
+                    Appointment currentAppointment = new Appointment();
+                    currentAppointment.runAppointment(currentPatient);
                     break;
                 case "3":
-                    System.out.println("prescription");
+                    Prescription.generatePrescription();
                     break;
                 case "4":
                     MedicalPatient addPatient = new MedicalPatient("currentNhi");
@@ -51,5 +59,17 @@ public class Doctor implements User{
             }
         }
     }
+
+    /*
+    public static Object[] expandCapacity(Object[] oldArray) {
+        //create bigger array
+        Object[] newArray = new Array[oldArray.length + 1];
+        for (int i = 0; i < oldArray.length; i++) {
+            newArray[i] = oldArray[i];
+        }
+        return newArray;
+    }
+
+     */
 
 }

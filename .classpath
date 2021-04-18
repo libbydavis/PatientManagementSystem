@@ -6,6 +6,10 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
+<<<<<<< HEAD
 	<classpathentry kind="lib" path="C:/Users/rajra/Desktop/gson-2.8.2.jar"/>
+=======
+	<classpathentry kind="lib" path="C:/Users/Raj/Desktop/gson-2.6.2.jar"/>
+>>>>>>> 5169e23cbb82bd56e25d0682da644041374bc736
 	<classpathentry kind="output" path="bin"/>
 </classpath>

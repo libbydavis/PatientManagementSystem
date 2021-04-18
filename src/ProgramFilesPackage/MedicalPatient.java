@@ -22,12 +22,13 @@ public class MedicalPatient implements Patient{
     private ArrayList<Appointment> appointmentsHistory;
 
 
-    public MedicalPatient(String nhi) {
+    public MedicalPatient(String nhi) { 
         NHI = nhi;
         conditions = new HashSet<>();
         currentMedications = new HashSet<>();
         measurements = new ArrayList<>();
         prescriptions = new ArrayList<>();
+        appointmentsHistory = new ArrayList<>();
     }
 
     public void setfName(String fName) {
@@ -48,6 +49,39 @@ public class MedicalPatient implements Patient{
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public boolean validateNHI(String nhi) throws IOException {
+        Patient patient = findPatientInDatabase(nhi);
+        if (patient.getName() != null) {
+            return true;
+        }
+        System.out.println("Please enter a valid NHI");
+        return false;
+    }
+
+    public String getValidNHI() {
+        Scanner scan = new Scanner(System.in);
+        boolean valid = false;
+        String nhi = "";
+        while (!valid) {
+            System.out.println("Please enter the NHI of the next patient: ");
+            nhi = scan.next();
+            if (nhi.length() == 6) {
+                valid = true;
+            }
+            else {
+                System.out.println("Please enter a valid NHI");
+            }
+        }
+        return nhi;
+    }
+
+    @Override
+    public void saveToAppointmentsHistory(Appointment a) throws IOException {
+        this.appointmentsHistory.add(a);
+
+        replacePatient(this);
     }
 
     public static void testDatabaseIn() throws IOException {
@@ -107,12 +141,11 @@ public class MedicalPatient implements Patient{
     }
 
     public void addPatient() throws IOException {
-        Scanner scan = new Scanner(System.in);
-        System.out.println("Please enter the NHI of the new patient: ");
-        String nhi = scan.nextLine();
+        String nhi = getValidNHI();
         MedicalPatient currentPatient = new MedicalPatient(nhi);
 
         //get details
+        Scanner scan = new Scanner(System.in);
         //first name
         System.out.println("First name:");
         String fName = scan.nextLine();
@@ -164,7 +197,36 @@ public class MedicalPatient implements Patient{
                     break;
             }
         }
+        
+        addPatientToDatabase(currentPatient);
+    }
 
+    public void replacePatient(MedicalPatient patientReplace) throws IOException {
+        //read in all patients to memory
+        MedicalPatient[] allPatients = deserializePatients();
+
+        //find matching item
+        int removeIndex = -1;
+        int i = 0;
+        while (removeIndex == -1){
+            if (allPatients[i].NHI.equals(patientReplace.NHI)) {
+                removeIndex = i;
+            }
+            else if ((i + 1) >= allPatients.length) {
+                removeIndex = 0;
+            }
+            i++;
+        }
+        //replace
+        allPatients[removeIndex] = patientReplace;
+
+        //add back to database
+        savePatientsToDatabase(allPatients);
+        System.out.println("Saved to Database");
+
+    }
+
+    public void addPatientToDatabase(MedicalPatient currentPatient) throws IOException {
 
         //read in all patients to memory
         MedicalPatient[] allPatients = deserializePatients();
@@ -183,6 +245,7 @@ public class MedicalPatient implements Patient{
         System.out.println("Saved Patient");
     }
 
+
     public void listAllPatients() throws IOException {
         //get patients
         MedicalPatient[] allPatients = deserializePatients();
@@ -194,11 +257,44 @@ public class MedicalPatient implements Patient{
 
         //print more details
         Scanner scan = new Scanner(System.in);
-        System.out.println("Would you like to see more details? Enter the NHI for the patient that you want to see more");
-        String patientNHI = scan.nextLine();
-        Patient more = new MedicalPatient(patientNHI);
-        more = findPatientInDatabase(patientNHI);
-        more.displayPatientDetails();
+        boolean validNHI = false;
+        String patientNHI = "";
+        while (!patientNHI.equals("x")) {
+            System.out.println("Would you like to see more details?");
+            while (!validNHI && !patientNHI.equals("x")) {
+                System.out.println("Enter the NHI for the patient that you want to see more (or x to exit)");
+                patientNHI = scan.nextLine();
+                if (!patientNHI.equals("x"))
+                    validNHI = validateNHI(patientNHI);
+            }
+            if (!patientNHI.equals("x")) {
+                Patient more = findPatientInDatabase(patientNHI);
+                more.displayPatientDetails();
+                validNHI = false;
+            }
+        }
+        
+        // different way to print more details so doctor can see details for every patient if he wants to and doesn't stop after he's seen one patient.
+        // this way it would allow them to prescribe the patient based on their conditions and the medicine's conditions etc.
+        /**
+        *   Scanner scan = new Scanner(System.in);
+            String patientNHI = "";
+            boolean quit = true;
+            while(quit)
+            {
+                System.out.println("Would you like to see more details? Enter the NHI for the patient that you want to see more (press x to exit)");
+                patientNHI = scan.nextLine();
+
+                if(patientNHI.equalsIgnoreCase("x"))
+                {
+                    quit = false;
+                }
+
+                Patient more = new MedicalPatient(patientNHI);
+                more = findPatientInDatabase(patientNHI);
+                more.displayPatientDetails();
+            }
+        */
     }
 
     public void savePatientsToDatabase(MedicalPatient[] listPatients) throws IOException {
@@ -236,14 +332,16 @@ public class MedicalPatient implements Patient{
             System.out.println("Current Medications: ");
             Iterator<Medication> iterate = currentMedications.iterator();
             while(iterate.hasNext()){
-                System.out.println(iterate.next().getName() + ": " + iterate.next().getDosage());
+                Medication thisOne = iterate.next();
+                System.out.println(thisOne.getName() + ": " + thisOne.getDosage());
             }
         }
         if (measurements.size() > 0) {
             System.out.println("Measurements: ");
             Iterator<Measurement> iterator = measurements.iterator();
             while(iterator.hasNext()){
-                System.out.println(iterator.next().getName() + ": " + iterator.next().getMeasurement() + iterator.next().getUnits());
+                Measurement thisOne = iterator.next();
+                System.out.println(thisOne.getName() + ": " + thisOne.getMeasurement() + thisOne.getUnits());
             }
         }
     }

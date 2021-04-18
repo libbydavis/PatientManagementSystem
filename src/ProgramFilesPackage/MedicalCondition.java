@@ -35,7 +35,7 @@ public class MedicalCondition {
             if (!name.equals("x")) {
                 this.name = name;
 
-                System.out.println("Enter the name of the condition: ");
+                System.out.println("Enter the description of the condition: ");
                 String description = scan.nextLine();
                 this.description = description;
 
