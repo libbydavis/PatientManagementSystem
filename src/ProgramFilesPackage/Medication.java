@@ -55,31 +55,32 @@ public class Medication
     {
         return conditions;
     }
-    /**
+    
+     /**
      * 
      * @param meds
      * @return
      * @throws FileNotFoundException 
      */
-    
-    public static void validateMeds(String medChoice, Scanner scanner) throws FileNotFoundException
-    {
-        while(!Medication.fileToHashMap().containsKey(medChoice))
-        {
-            System.out.println("This does not exist in the list of medication, please try again");
-            
-            medChoice = scanner.nextLine();
-            
-            if(medChoice.equalsIgnoreCase("x"))
-            {
-                break;
-            }
-        }
-    }
     public static Medication getMeds(String meds) throws FileNotFoundException 
     {
        return Medication.fileToHashMap().get(meds);
     }
+    /**
+     * 
+     * @param medChoice
+     * @throws FileNotFoundException 
+     */
+    public static void validateMeds(String medChoice) throws FileNotFoundException
+    {
+        Scanner scanner = new Scanner(System.in);
+        while(!Medication.fileToHashMap().containsKey(medChoice))
+        {
+            System.out.println("This does not exist in the list of medication, please try again");
+            medChoice = scanner.nextLine();
+        }
+    }
+    
     /**
      * 
      * @return
@@ -93,6 +94,7 @@ public class Medication
 
         return medList;
     }
+
     /**
      * 
      * @throws FileNotFoundException 
@@ -100,7 +102,7 @@ public class Medication
     public static void printMedInfo() throws FileNotFoundException 
     {
         Scanner scan = new Scanner(System.in);
-         printMedList(); // Retrieves the names of all medication in the Json file.
+        printMedList(); // Retrieves the names of all medication in the Json file.
             
         // Scans for user input, asking the doctor what details of the medication they want to see.
         String uInput = "";
@@ -134,6 +136,7 @@ public class Medication
         {
             System.out.println(" (" + s.getKey() + ")\t  " + s.getValue().getName());
         }
+        //System.out.println("\n");
     }
 
     public String toString() 

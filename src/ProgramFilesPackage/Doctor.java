@@ -38,8 +38,9 @@ public class Doctor implements User{
                     currentAppointment.runAppointment(currentPatient);
                     break;
                 case "3":
-                    Prescription.generatePrescription();
+                    Prescription Prsc = Prescription.generatePrescription();
                     break;
+
                 case "4":
                     MedicalPatient addPatient = new MedicalPatient("currentNhi");
                     addPatient.addPatient();

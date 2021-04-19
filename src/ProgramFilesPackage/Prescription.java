@@ -32,7 +32,7 @@ public class Prescription
   
     public static Prescription generatePrescription() throws IOException 
     {
-        
+        Prescription patientPresc = null;
         Scanner scan = new Scanner(System.in);
         String uInput = "";
         boolean loop = true;
@@ -60,7 +60,7 @@ public class Prescription
                     Medication patientMeds;
                     String docName = "John Smith";
                     String prescribedDate, prescribedTime, /*docName,*/ prescPatient, medChoice;
-                    boolean medRepeat;
+                    boolean medRepeat = false;
                     Date currentDate = new Date();
                     SimpleDateFormat tf = new SimpleDateFormat("HH:mm:ss");
                     SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
@@ -69,42 +69,46 @@ public class Prescription
                     // Prompts to fill in prescription
                     // Prompt for the patient
                     System.out.println("NHI number of the patient you want to prescribe this medicine to:");
-                    prescPatient = scan.nextLine();
-                    patients.findPatientInDatabase(prescPatient).toString();
+                    do
+                    {
+                        prescPatient = scan.nextLine();
+                    }while(patients.validateNHI(prescPatient) == false);
                     //TODO: validate if patient exists by comparing NHI numbers
-                    
                     // Prompt for the medication
                     System.out.println("Enter the MedNo# of the medicine you'd like to prescribe:");
                     medChoice = scan.nextLine();
-                    Medication.validateMeds(medChoice, scan); //medication validation
+                    Medication.validateMeds(medChoice); 
                     patientMeds = Medication.getMeds(medChoice);
                     // Prompt for Dosage
-                     double doseAmount;
-                    double temp = 0.1;
-                    boolean userDosage = true;
-
-                    while (userDosage) 
-                    {
-                        try 
-                        {
-                            System.out.println("Enter the dosage amount for the patient (2 d.p):");
-                            temp = scan.nextDouble();
-                            userDosage = false;
-                        } catch (InputMismatchException e) 
-                        {
-                            scan.next();
-                            System.out.println("Invalid Input, please try again");
-                            scan.next();
-                            userDosage = true;
-                        }
-                    }
+                    double doseAmount = 0.0;
+                    System.out.println("Enter the dosage amount for the patient (2 d.p):");
+                    doseAmount = Checker.DoubleInput(doseAmount);
                     System.out.println("Enter how often the patient should be taking this medication: (.e.g, 5 times a week for breakfast, lunch and dinner)");
                     String doseFrequency = scan.nextLine();
-                    patientMeds.setDosage(new Dosage(temp, doseFrequency));
+                    while(doseFrequency.length() == 0)
+                    {
+                        System.out.println("A patient's dosage frequency must be specified");
+                        doseFrequency = scan.nextLine();
+                    }
+                    patientMeds.setDosage(new Dosage(doseAmount, doseFrequency));
                     // Prompt for repeat prescription
-                    System.out.println("Will the patient need to be prescribed this medication again?");
-                    medRepeat = scan.nextBoolean();
-                    Prescription patientPresc = new Prescription(prescribedDate, prescribedTime, patientMeds, docName, patients.findPatientInDatabase(prescPatient), medRepeat);
+                    System.out.println("Will the patient need to be prescribed this medication again? (Enter a boolean (true/false))");
+                    boolean sumtn = true;
+                    while(sumtn)
+                    {
+                        try
+                        {
+                            medRepeat = scan.nextBoolean();
+                            sumtn = false;
+                        }
+                        catch(InputMismatchException e)
+                        {
+                            scan.next();
+                            System.out.println("Invalide input, please try again");
+                            sumtn = true;
+                        }
+                    }
+                    patientPresc = new Prescription(prescribedDate, prescribedTime, patientMeds, docName, patients.findPatientInDatabase(prescPatient), medRepeat);
                     break;
                 case "4":
                     loop = false;
@@ -114,7 +118,7 @@ public class Prescription
                     break;
             }
         } 
-        return null;
+        return patientPresc;
     }
 
     public String toString() 
@@ -122,4 +126,5 @@ public class Prescription
         return "\nPrescripted Date: " + date + "\nPrescripted Time: " + time + "\nPrescribed Medication: " + meds + "\nDoctor: " + doctorName + "\nPatient Details:" + "\nRepeat: " + repeat;
     }
 }
-    // Be able to edit a patients details once they've entered it. E.g., their address, phone no, age etc.
+
+// Be able to edit a patients details once they've entered it. E.g., their address, phone no, age etc.

@@ -51,6 +51,16 @@ public class MedicalPatient implements Patient{
         this.address = address;
     }
 
+    public void setPrescriptions(ArrayList<Prescription> prescriptions) 
+    {
+        this.prescriptions = prescriptions;
+    }
+    
+    public void setCurrentMedications(HashSet<Medication> currentMedications) 
+    {
+        this.currentMedications = currentMedications;
+    }
+    
     /**
      * @author -LibbyDavis
      * @param nhi
@@ -171,8 +181,24 @@ public class MedicalPatient implements Patient{
                     getConditions.enterConditions(currentPatient.conditions);
                     break;
                 case "2":
-                    System.out.println("medications add");
-                    //add in medications
+                    String existingMeds = "";
+                    Medication.printMedList();
+                    System.out.println();
+                    while(true)
+                    {
+                        System.out.println("Enter the MedNo# of the current medication the patient is prescribed (press x to exit)");
+                        existingMeds = scan.nextLine();
+                        
+                        if(existingMeds.equalsIgnoreCase("x"))
+                        {
+                            break;
+                        }
+                        
+                        Medication.validateMeds(existingMeds);
+                        Medication temp = Medication.getMeds(existingMeds);
+                        currentMedications.add(temp);
+                        currentPatient.setCurrentMedications(currentMedications);
+                    }
                     break;
                 case "3":
                     Measurement getMeasurements = new Measurement();
