@@ -181,10 +181,6 @@ public class MedicalPatient implements Patient{
                     getConditions.enterConditions(currentPatient.conditions);
                     break;
                 case "2":
-<<<<<<< HEAD
-
-=======
->>>>>>> e3b7a488ff5dc4adbea36c992cd092184549eae5
                     String existingMeds = "";
                     Medication.printMedList();
                     System.out.println();
@@ -203,15 +199,7 @@ public class MedicalPatient implements Patient{
                         currentMedications.add(temp);
                         currentPatient.setCurrentMedications(currentMedications);
                     }
-<<<<<<< HEAD
-
-                    Medication.printMedInfo();
                     //add in medications
-
-=======
-                    Medication.printMedInfo();
-                    //add in medications
->>>>>>> e3b7a488ff5dc4adbea36c992cd092184549eae5
                     break;
                 case "3":
                     Measurement getMeasurements = new Measurement();
