@@ -4,10 +4,7 @@ import com.google.gson.Gson;
 
 import java.io.*;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Scanner;
+import java.util.*;
 
 public class Appointment {
     private String dateString;
@@ -72,9 +69,23 @@ public class Appointment {
                     case "4":
                         appointmentRunning = false;
                         choiceValid = true;
-                        //saveAppointment();
-                        patient.saveToAppointmentsHistory(this);
-                        System.out.println("Appointment Finished");
+                        String save = "";
+                        System.out.println(this.toString());
+                        while (!save.equals("y") && !save.equals("x")) {
+                            System.out.println("Save Appointment? (y to confirm, x to exit)");
+                            save = scan.next();
+                            if (!save.equals("y") && !save.equals("x")) {
+                                System.out.println("Please enter either y or x.");
+                            }
+                        }
+                        if (save.equals("y")) {
+                            patient.saveToAppointmentsHistory(this);
+                            System.out.println("Appointment Saved");
+                        }
+                        else if (save.equals("x")) {
+                            System.out.println("Appointment Not Saved");
+                        }
+
                         break;
                     default:
                         System.out.println("Please enter a number from 1-4.");
@@ -182,5 +193,20 @@ public class Appointment {
             printList("Notes", this.notes);
         }
 
-
+        public String toString() {
+            String appointmentString = "Appointment Overview:\n" +  this.dateString + "\nReasons:\n";
+            for (int i = 0; i < this.reasons.size(); i++) {
+                appointmentString += (i + 1) + ". " + this.reasons.get(i) + "\n";
+            }
+            appointmentString += "Measurements Taken:\n";
+            for (int i = 0; i < this.measurementsTaken.size(); i++) {
+                appointmentString += (i + 1) + ". " + this.measurementsTaken.get(i).getName() + ": " + this.measurementsTaken.get(i).getMeasurement()
+                + this.measurementsTaken.get(i).getUnits() + "\n";
+            }
+            appointmentString += "Notes:\n";
+            for (int i = 0; i < this.notes.size(); i++) {
+                appointmentString += (i + 1) + ". " + this.notes.get(i);
+            }
+            return appointmentString;
+        }
     }

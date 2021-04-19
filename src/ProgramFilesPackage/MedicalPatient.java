@@ -171,7 +171,7 @@ public class MedicalPatient implements Patient{
                     getConditions.enterConditions(currentPatient.conditions);
                     break;
                 case "2":
-                    System.out.println("medications add");
+                    Medication.printMedInfo();
                     //add in medications
                     break;
                 case "3":

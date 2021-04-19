@@ -43,11 +43,9 @@ public class Doctor implements User{
                 case "4":
                     MedicalPatient addPatient = new MedicalPatient("currentNhi");
                     addPatient.addPatient();
-                    //MedicalPatient.testDatabaseIn();
                     break;
                 case "5":
                     System.out.println("edit patient");
-                    //MedicalPatient.testDatabaseOut();
                     break;
                 case "6":
                     runningUser = false;
@@ -60,16 +58,5 @@ public class Doctor implements User{
         }
     }
 
-    /*
-    public static Object[] expandCapacity(Object[] oldArray) {
-        //create bigger array
-        Object[] newArray = new Array[oldArray.length + 1];
-        for (int i = 0; i < oldArray.length; i++) {
-            newArray[i] = oldArray[i];
-        }
-        return newArray;
-    }
-
-     */
 
 }
