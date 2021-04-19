@@ -10,22 +10,25 @@ import java.util.HashSet;
 import java.util.Scanner;
 
 public class Appointment {
-    private Date date;
+    private String dateString;
     private ArrayList<String> reasons;
     private ArrayList<Measurement> measurementsTaken;
     private ArrayList<String> notes;
 
     public Appointment() {
         SimpleDateFormat format = new SimpleDateFormat("HH:mm dd/MM/yyyy");
-        date = new Date();
+        Date date = new Date();
+        dateString = date.toString();
         reasons = new ArrayList<>();
         measurementsTaken = new ArrayList<>();
         notes = new ArrayList<>();
     }
 
-    public Date getDate() {
-        return date;
+
+    public String getDate() {
+        return dateString;
     }
+
 
     public ArrayList<String> getReasons() {
         return reasons;
