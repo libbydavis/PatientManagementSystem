@@ -17,7 +17,6 @@ import java.io.IOException;
 
 public class Medication 
 {
-
     private String name;
     private Dosage dosage;
     private HashSet<String> sideEffects;
@@ -66,6 +65,7 @@ public class Medication
     {
        return Medication.fileToHashMap().get(meds);
     }
+    
     /**
      * 
      * @param medChoice
@@ -125,6 +125,7 @@ public class Medication
             System.out.println(fileToHashMap().get(uInput));
         }
     }
+    
     /**
      * 
      * @throws FileNotFoundException 
@@ -136,7 +137,6 @@ public class Medication
         {
             System.out.println(" (" + s.getKey() + ")\t  " + s.getValue().getName());
         }
-        //System.out.println("\n");
     }
 
     public String toString() 
