@@ -32,8 +32,8 @@ public class Prescription
   
     public static Prescription generatePrescription() throws IOException 
     {
-        Prescription patientPresc = null;
         Scanner scan = new Scanner(System.in);
+        Prescription patientPresc = null;
         String uInput = "";
         boolean loop = true;
         
@@ -62,10 +62,10 @@ public class Prescription
                     String prescribedDate, prescribedTime, /*docName,*/ prescPatient, medChoice;
                     boolean medRepeat = false;
                     Date currentDate = new Date();
-                    SimpleDateFormat tf = new SimpleDateFormat("HH:mm:ss");
-                    SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
-                    prescribedTime = tf.format(currentDate);
-                    prescribedDate = df.format(currentDate);
+                    SimpleDateFormat timeFormatter = new SimpleDateFormat("HH:mm:ss");
+                    SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yyyy");
+                    prescribedTime = timeFormatter.format(currentDate);
+                    prescribedDate = dateFormatter.format(currentDate);
                     // Prompts to fill in prescription
                     // Prompt for the patient
                     System.out.println("NHI number of the patient you want to prescribe this medicine to:");
@@ -94,22 +94,25 @@ public class Prescription
                     // Prompt for repeat prescription
                     System.out.println("Will the patient need to be prescribed this medication again? (Enter a boolean (true/false))");
                     boolean sumtn = true;
-                    while(sumtn)
+                    
+                    while(medRepeat)
                     {
                         try
                         {
                             medRepeat = scan.nextBoolean();
-                            sumtn = false;
+                            medRepeat = false;
                         }
                         catch(InputMismatchException e)
                         {
                             scan.next();
                             System.out.println("Invalide input, please try again");
-                            sumtn = true;
+                            medRepeat = true;
                         }
                     }
                     patientPresc = new Prescription(prescribedDate, prescribedTime, patientMeds, docName, patients.findPatientInDatabase(prescPatient), medRepeat);
+                    scan.skip("");
                     break;
+
                 case "4":
                     loop = false;
                     break;
