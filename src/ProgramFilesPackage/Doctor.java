@@ -38,15 +38,22 @@ public class Doctor implements User{
                     currentAppointment.runAppointment(currentPatient);
                     break;
                 case "3":
-                    Prescription Prsc = Prescription.generatePrescription();
+                    Prescription.generatePrescription();
                     break;
-
                 case "4":
                     MedicalPatient addPatient = new MedicalPatient("currentNhi");
                     addPatient.addPatient();
                     break;
                 case "5":
-                    System.out.println("edit patient");
+                    String patientNHI = "";
+                    MedicalPatient medPatientObj = new MedicalPatient("");
+                    System.out.println("What is the NHI of the patient you want to edit?");
+                    do
+                    {
+                        patientNHI = scan.nextLine();
+                    }while(medPatientObj.validateNHI(patientNHI) == false);
+                    medPatientObj.validateNHI(patientNHI);
+                    medPatientObj.editPatient(patientNHI);
                     break;
                 case "6":
                     runningUser = false;
@@ -58,6 +65,4 @@ public class Doctor implements User{
             }
         }
     }
-
-
 }
