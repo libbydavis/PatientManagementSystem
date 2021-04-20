@@ -21,8 +21,8 @@ public class MedicalPatient implements Patient{
     private ArrayList<Prescription> prescriptions;
     private ArrayList<Appointment> appointmentsHistory;
 
-
-    public MedicalPatient(String nhi) { 
+    public MedicalPatient(String nhi) 
+    { 
         NHI = nhi;
         conditions = new HashSet<>();
         currentMedications = new HashSet<>();
@@ -31,23 +31,28 @@ public class MedicalPatient implements Patient{
         appointmentsHistory = new ArrayList<>();
     }
 
-    public void setfName(String fName) {
+    public void setfName(String fName) 
+    {
         this.fName = fName;
     }
 
-    public void setlName(String lName) {
+    public void setlName(String lName) 
+    {
         this.lName = lName;
     }
 
-    public void setAge(int age) {
+    public void setAge(int age) 
+    {
         this.age = age;
     }
 
-    public void setPhoneNumber(String phoneNumber) {
+    public void setPhoneNumber(String phoneNumber) 
+    {
         this.phoneNumber = phoneNumber;
     }
 
-    public void setAddress(String address) {
+    public void setAddress(String address) 
+    {
         this.address = address;
     }
 
@@ -56,11 +61,26 @@ public class MedicalPatient implements Patient{
         this.prescriptions = prescriptions;
     }
     
+     public ArrayList<Prescription> getPrescriptions() 
+    {
+        return prescriptions;
+    }
+    
+    public HashSet<Medication> getCurrentMedications() 
+    {
+        return currentMedications;
+    }
+    
     public void setCurrentMedications(HashSet<Medication> currentMedications) 
     {
         this.currentMedications = currentMedications;
     }
-    
+
+    public ArrayList<Measurement> getMeasurements() 
+    {
+        return measurements;
+    }
+
     /**
      * @author -LibbyDavis
      * @param nhi
@@ -199,7 +219,6 @@ public class MedicalPatient implements Patient{
                         currentMedications.add(temp);
                         currentPatient.setCurrentMedications(currentMedications);
                     }
-                    //add in medications
                     break;
                 case "3":
                     Measurement getMeasurements = new Measurement();
@@ -222,6 +241,108 @@ public class MedicalPatient implements Patient{
         else if (confirm.equals("x")) {
             System.out.println("Add Patient Cancelled");
         }
+    }
+    /**
+     * 
+     * @param NHI
+     * @throws IOException 
+     */
+    public void editPatient(String NHI) throws IOException
+    {
+        Scanner scan = new Scanner(System.in);
+        Patient[] allPatients = deserializePatients();
+        HashSet<Medication> currentMeds = null;
+        MedicalPatient medPatientObj = (MedicalPatient) allPatients[0].findPatientInDatabase(NHI);
+        System.out.println();
+        allPatients[0].findPatientInDatabase(NHI).displayPatientDetails();
+        System.out.println("\nWhat details of this patient would you like to edit? (pick a number between 1-9)");
+        System.out.println("1. First Name");
+        System.out.println("2. Last Name");
+        System.out.println("3. Age");
+        System.out.println("4. Phone Number");
+        System.out.println("5. Address");
+        System.out.println("6. Current Medication");
+        System.out.println("7. Measurements");
+        System.out.println("8. Prescriptions");
+        System.out.println("9. Conditions");
+        String patientAttribute = scan.nextLine();
+        
+        switch(patientAttribute)
+        {
+            case "1":
+                System.out.println("Enter updated first name:");
+                String updatedFName = scan.nextLine();
+                medPatientObj.setfName(updatedFName);
+                break;
+            case "2":
+                System.out.println("Enter updated last name:");
+                String updatedLName = scan.nextLine();
+                medPatientObj.setlName(updatedLName);
+                break;
+            case "3":
+                System.out.println("Enter updated age:");
+                medPatientObj.setAge(age);
+                break;
+            case "4":
+                System.out.println("Enter updated phone number:");
+                medPatientObj.setPhoneNumber(phoneNumber);
+                break;
+            case "5":
+                System.out.println("Enter updated address:");
+                medPatientObj.setAddress(address);
+                break;
+            case "6":
+                System.out.println("1. Add a medication");
+                System.out.println("2. Remove a medication");
+                String updatedMeds = scan.nextLine();
+                switch(updatedMeds)
+                {
+                    case "1":
+                        currentMeds = medPatientObj.getCurrentMedications();
+                        System.out.println("What medication would you like to add?");
+                        String newMeds;
+                        //boolean enterMeds = true;
+                        while(true)
+                        {
+                            System.out.println("Enter the MedNo# of the medication you'd like to add to the patient (press x to exit)");
+                            newMeds = scan.nextLine();
+                        
+                            if(newMeds.equalsIgnoreCase("x"))
+                            {
+                                break;
+                            }
+                            
+                            Medication.validateMeds(newMeds);
+                        }
+                        Medication addedMeds = Medication.getMeds(newMeds);
+                        currentMeds.add(addedMeds);
+                        medPatientObj.setCurrentMedications(currentMeds);
+                        break;
+                    case "2":
+                        System.out.println(medPatientObj.getCurrentMedications());
+                        System.out.println("Which medication would you like to remove?");;
+                        break;
+                    default:
+                        System.out.println("Incorrect input, please try again");
+                        break;
+                }
+                break;
+            case "7":
+                break;
+            case "8":
+                break;
+            case "9":
+                break;
+            default:
+                System.out.println("Incorrect input, please try again");
+                break;
+        }
+        
+        //confirm that the updates are wanted.
+        
+        replacePatient(medPatientObj);
+        System.out.println("Updated patient details:\n");
+        medPatientObj.displayPatientDetails();
     }
 
     /**
