@@ -112,9 +112,11 @@ public class Prescription
                     }
                     patientPrescs = new ArrayList<Prescription>();
                     patientPrescs.add(new Prescription(prescribedDate, prescribedTime, patientMeds, docName, patients.findPatientInDatabase(prescPatient), medRepeat));
+                    /*
                     MedicalPatient tempPatient = (MedicalPatient) patients.findPatientInDatabase(prescPatient);
                     tempPatient.setPrescriptions(patientPrescs);
                     MedicalPatient[] tempPatientList = tempPatient.deserializePatients();
+                    */
                     scan.skip("");
                     break;
                 case "4":
