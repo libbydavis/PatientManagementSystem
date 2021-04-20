@@ -2,6 +2,7 @@ package ProgramFilesPackage;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -30,15 +31,15 @@ public class Prescription
         this.repeat = repeat;
     }
   
-    public static Prescription generatePrescription() throws IOException 
+    public static ArrayList<Prescription> generatePrescription() throws IOException 
     {
-        Scanner scan = new Scanner(System.in);
-        Prescription patientPresc = null;
+        ArrayList<Prescription> patientPrescs = null;
         String uInput = "";
         boolean loop = true;
         
         while(loop)
         {
+            Scanner scan = new Scanner(System.in);
             System.out.println("Enter a number to select:");
             System.out.println("1. List of all current patients");
             System.out.println("2. List of all current medicine");
@@ -93,26 +94,29 @@ public class Prescription
                     patientMeds.setDosage(new Dosage(doseAmount, doseFrequency));
                     // Prompt for repeat prescription
                     System.out.println("Will the patient need to be prescribed this medication again? (Enter a boolean (true/false))");
-                    boolean sumtn = true;
+                    boolean medRepeatLoop = true;
                     
-                    while(medRepeat)
+                    while(medRepeatLoop)
                     {
                         try
                         {
                             medRepeat = scan.nextBoolean();
-                            medRepeat = false;
+                            medRepeatLoop = false;
                         }
                         catch(InputMismatchException e)
                         {
                             scan.next();
                             System.out.println("Invalide input, please try again");
-                            medRepeat = true;
+                            medRepeatLoop = true;
                         }
                     }
-                    patientPresc = new Prescription(prescribedDate, prescribedTime, patientMeds, docName, patients.findPatientInDatabase(prescPatient), medRepeat);
+                    patientPrescs = new ArrayList<Prescription>();
+                    patientPrescs.add(new Prescription(prescribedDate, prescribedTime, patientMeds, docName, patients.findPatientInDatabase(prescPatient), medRepeat));
+                    MedicalPatient tempPatient = (MedicalPatient) patients.findPatientInDatabase(prescPatient);
+                    tempPatient.setPrescriptions(patientPrescs);
+                    MedicalPatient[] tempPatientList = tempPatient.deserializePatients();
                     scan.skip("");
                     break;
-
                 case "4":
                     loop = false;
                     break;
@@ -121,7 +125,7 @@ public class Prescription
                     break;
             }
         } 
-        return patientPresc;
+        return patientPrescs;
     }
 
     public String toString() 
