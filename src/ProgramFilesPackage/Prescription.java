@@ -102,28 +102,6 @@ public class Prescription
                     }
 
                     patientPresc = new Prescription(prescribedDate, prescribedTime, patientMeds, docName, patients.getName(), medRepeat);
-
-                    //patientPrescs = new ArrayList<Prescription>();
-                    //patientPrescs.add(new Prescription(prescribedDate, prescribedTime, patientMeds, docName, patients.findPatientInDatabase(prescPatient), medRepeat));
-
-                    //add to database -Libby
-                    MedicalPatient tempPatient = new MedicalPatient("");
-//                    tempPatient = (MedicalPatient) tempPatient.findPatientInDatabase(prescPatient);
-//                    tempPatient.setPrescriptions(patientPrescs);
-                    //add to current medications
-                    HashSet<Medication> holdMedications = tempPatient.getCurrentMedications();
-                    holdMedications.add(patientMeds);
-                    tempPatient.setCurrentMedications(holdMedications);
-                    //save to database
-                    tempPatient.replacePatient(tempPatient);
-
-
-                    /*
-                    MedicalPatient tempPatient = (MedicalPatient) patients.findPatientInDatabase(prescPatient);
-                    tempPatient.setPrescriptions(patientPrescs);
-                    MedicalPatient[] tempPatientList = tempPatient.deserializePatients();
-                    */
-
                     scan.skip("");
                     break;
                 case "4":
