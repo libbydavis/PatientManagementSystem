@@ -13,7 +13,7 @@ public class Prescription
     String time;
     Medication meds;
     String doctorName;
-    Patient patientDetails;
+    String patientName;
     Boolean repeat;
 
     public String getDate() 
@@ -21,19 +21,19 @@ public class Prescription
         return date;
     }
     
-    public Prescription(String date, String time, Medication meds, String doctorName, Patient patientDetails, Boolean repeat) 
+    public Prescription(String date, String time, Medication meds, String doctorName, String patientName, Boolean repeat) 
     {	
         this.date = date;
         this.time = time;
         this.meds = meds;
         this.doctorName = doctorName;
-        this.patientDetails = patientDetails;
+        this.patientName = patientName;
         this.repeat = repeat;
     }
   
-    public static ArrayList<Prescription> generatePrescription() throws IOException 
+    public static Prescription generatePrescription(String NHI) throws IOException 
     {
-        ArrayList<Prescription> patientPrescs = null;
+        Prescription patientPresc = null;
         String uInput = "";
         boolean loop = true;
         
@@ -43,11 +43,11 @@ public class Prescription
             System.out.println("Enter a number to select:");
             System.out.println("1. List of all current patients");
             System.out.println("2. List of all current medicine");
-            System.out.println("3. Create a prescription");
+            System.out.println("3. Create a prescription (without viewing patient and medicine details)");
             System.out.println("4. Go back to main menu");
             uInput = scan.nextLine();
             MedicalPatient patients = new MedicalPatient("Patients List");
-            
+            patients = (MedicalPatient) patients.findPatientInDatabase(NHI);
             switch(uInput)
             {
                 case "1":
@@ -68,13 +68,6 @@ public class Prescription
                     prescribedTime = timeFormatter.format(currentDate);
                     prescribedDate = dateFormatter.format(currentDate);
                     // Prompts to fill in prescription
-                    // Prompt for the patient
-                    System.out.println("NHI number of the patient you want to prescribe this medicine to:");
-                    do
-                    {
-                        prescPatient = scan.nextLine();
-                    }while(patients.validateNHI(prescPatient) == false);
-                    //TODO: validate if patient exists by comparing NHI numbers
                     // Prompt for the medication
                     System.out.println("Enter the MedNo# of the medicine you'd like to prescribe:");
                     medChoice = scan.nextLine();
@@ -110,13 +103,7 @@ public class Prescription
                             medRepeatLoop = true;
                         }
                     }
-                    patientPrescs = new ArrayList<Prescription>();
-                    patientPrescs.add(new Prescription(prescribedDate, prescribedTime, patientMeds, docName, patients.findPatientInDatabase(prescPatient), medRepeat));
-                    /*
-                    MedicalPatient tempPatient = (MedicalPatient) patients.findPatientInDatabase(prescPatient);
-                    tempPatient.setPrescriptions(patientPrescs);
-                    MedicalPatient[] tempPatientList = tempPatient.deserializePatients();
-                    */
+                    patientPresc = new Prescription(prescribedDate, prescribedTime, patientMeds, docName, patients.getName(), medRepeat);
                     scan.skip("");
                     break;
                 case "4":
@@ -127,13 +114,11 @@ public class Prescription
                     break;
             }
         } 
-        return patientPrescs;
+        return patientPresc;
     }
 
     public String toString() 
     {
-        return "\nPrescripted Date: " + date + "\nPrescripted Time: " + time + "\nPrescribed Medication: " + meds + "\nDoctor: " + doctorName + "\nPatient Details:" + "\nRepeat: " + repeat;
+        return "\nPrescripted Date: " + date + "\nPrescripted Time: " + time + "\nPrescribed Medication: " + meds + "\nDoctor: " + doctorName + "\nPatient Name:" + patientName + "\nRepeat: " + repeat;
     }
 }
-
-// Be able to edit a patients details once they've entered it. E.g., their address, phone no, age etc.

@@ -1,5 +1,8 @@
 package ProgramFilesPackage;
-
+/**
+ * 
+ * @author Raj
+ */
 public class Dosage 
 {  
     double amount;

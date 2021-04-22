@@ -4,11 +4,15 @@ import com.google.gson.Gson;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Scanner;
+import java.util.Set;
 
-public class MedicalPatient implements Patient{
+public class MedicalPatient implements Patient
+{
     private String fName;
     private String lName;
     private int age;
@@ -29,6 +33,11 @@ public class MedicalPatient implements Patient{
         measurements = new ArrayList<>();
         prescriptions = new ArrayList<>();
         appointmentsHistory = new ArrayList<>();
+    }
+
+    public String getNHI()
+    {
+        return NHI;
     }
 
     public void setfName(String fName) 
@@ -81,6 +90,21 @@ public class MedicalPatient implements Patient{
         return measurements;
     }
 
+    public void setMeasurements(ArrayList<Measurement> measurements) 
+    {
+        this.measurements = measurements;
+    }
+    
+    public HashSet<MedicalCondition> getConditions() 
+    {
+        return conditions;
+    }
+
+    public void setConditions(HashSet<MedicalCondition> conditions) 
+    {
+        this.conditions = conditions;
+    }
+    
     /**
      * @author -LibbyDavis
      * @param nhi
@@ -242,107 +266,250 @@ public class MedicalPatient implements Patient{
             System.out.println("Add Patient Cancelled");
         }
     }
+
     /**
      * 
      * @param NHI
      * @throws IOException 
+     * @author Raj
      */
     public void editPatient(String NHI) throws IOException
     {
         Scanner scan = new Scanner(System.in);
         Patient[] allPatients = deserializePatients();
-        HashSet<Medication> currentMeds = null;
         MedicalPatient medPatientObj = (MedicalPatient) allPatients[0].findPatientInDatabase(NHI);
-        System.out.println();
+        HashSet<Medication> currentMeds = medPatientObj.getCurrentMedications();
+        ArrayList<Measurement> currentMeasurements = medPatientObj.getMeasurements();
+        ArrayList<Prescription> currentPrescriptions = medPatientObj.getPrescriptions();
+        HashSet<MedicalCondition> currentConditions = medPatientObj.getConditions();
         allPatients[0].findPatientInDatabase(NHI).displayPatientDetails();
-        System.out.println("\nWhat details of this patient would you like to edit? (pick a number between 1-9)");
-        System.out.println("1. First Name");
-        System.out.println("2. Last Name");
-        System.out.println("3. Age");
-        System.out.println("4. Phone Number");
-        System.out.println("5. Address");
-        System.out.println("6. Current Medication");
-        System.out.println("7. Measurements");
-        System.out.println("8. Prescriptions");
-        System.out.println("9. Conditions");
-        String patientAttribute = scan.nextLine();
+        boolean runningEdit = true;
         
-        switch(patientAttribute)
+        while (runningEdit) 
         {
-            case "1":
-                System.out.println("Enter updated first name:");
-                String updatedFName = scan.nextLine();
-                medPatientObj.setfName(updatedFName);
-                break;
-            case "2":
-                System.out.println("Enter updated last name:");
-                String updatedLName = scan.nextLine();
-                medPatientObj.setlName(updatedLName);
-                break;
-            case "3":
-                System.out.println("Enter updated age:");
-                medPatientObj.setAge(age);
-                break;
-            case "4":
-                System.out.println("Enter updated phone number:");
-                medPatientObj.setPhoneNumber(phoneNumber);
-                break;
-            case "5":
-                System.out.println("Enter updated address:");
-                medPatientObj.setAddress(address);
-                break;
-            case "6":
-                System.out.println("1. Add a medication");
-                System.out.println("2. Remove a medication");
-                String updatedMeds = scan.nextLine();
-                switch(updatedMeds)
-                {
-                    case "1":
-                        currentMeds = medPatientObj.getCurrentMedications();
-                        System.out.println("What medication would you like to add?");
-                        String newMeds;
-                        //boolean enterMeds = true;
-                        while(true)
+            System.out.println("\nWhat details of this patient would you like to edit? Enter a number to select:");
+            System.out.println("1. First Name" + "\n2. Last Name" + "\n3. Age" + "\n4. Phone Number" + "\n5. Address" + 
+                    "\n6. Current Medication" + "\n7. Measurements" + "\n8. Prescriptions" + "\n9. Conditions" + "\n10. Exit Edit Menu" + "\n11. Completed editing patient details");
+            String patientAttribute = scan.nextLine();
+            switch (patientAttribute) 
+            {
+                case "1":
+                    System.out.println("Enter updated first name:");
+                    String updatedFName = scan.nextLine();
+                    medPatientObj.setfName(updatedFName);
+                    break;
+                case "2":
+                    System.out.println("Enter updated last name:");
+                    String updatedLName = scan.nextLine();
+                    medPatientObj.setlName(updatedLName);
+                    break;
+                case "3":
+                    System.out.println("Enter updated age:");
+                    medPatientObj.setAge(age);
+                    break;
+                case "4":
+                    System.out.println("Enter updated phone number:");
+                    medPatientObj.setPhoneNumber(phoneNumber);
+                    break;
+                case "5":
+                    System.out.println("Enter updated address:");
+                    medPatientObj.setAddress(address);
+                    break;
+                case "6":
+                    boolean updatingMeds = true;
+                    
+                    while (updatingMeds) 
+                    {
+                        System.out.println("Enter a number to select:");
+                        System.out.println("1. Add a medication" + "\n2. Remove a medication" + "\n3. Exit medication editing");
+                        String updatedMeds = scan.nextLine();
+                        switch (updatedMeds) 
                         {
-                            System.out.println("Enter the MedNo# of the medication you'd like to add to the patient (press x to exit)");
-                            newMeds = scan.nextLine();
-                        
-                            if(newMeds.equalsIgnoreCase("x"))
-                            {
+                            case "1":
+                                System.out.println("What medication would you like to add?");
+                                String newMeds;
+                                Medication.printMedList();
+                                boolean enteringMeds = true;
+                                do 
+                                {
+                                    System.out.println("Enter the MedNo# of the medication you'd like to add to the patient (press x to exit)");
+                                    newMeds = scan.nextLine();
+
+                                    if (newMeds.equalsIgnoreCase("x")) 
+                                    {
+                                        enteringMeds = false;
+                                        continue;                    
+                                    }
+                                    
+                                    while(enteringMeds)
+                                    {
+                                        Medication.validateMeds(newMeds);
+                                        Medication addedMeds = Medication.getMeds(newMeds);
+                                        currentMeds.add(addedMeds);
+                                        medPatientObj.setCurrentMedications(currentMeds);
+                                        enteringMeds = false;
+                                    }
+                                    enteringMeds = true;
+                                }while (enteringMeds);
                                 break;
-                            }
-                            
-                            Medication.validateMeds(newMeds);
+                            case "2":
+                                Iterator<Medication> it = currentMeds.iterator();
+                                System.out.println(medPatientObj.getName() + "'s current medication:\n");
+                                int j = 1;
+                                while (it.hasNext()) 
+                                {
+                                    System.out.println(j + ". " + it.next().getName());
+                                    j++;
+                                }
+                                //Search by medicine name.
+                                //TODO: Put into a while loop so multiple medication can be removed.
+                                System.out.println("\nEnter the name of the medication you'd like to remove");
+                                String uInput = scan.nextLine();
+                                while(Medication.searchMedsByName(uInput) == null)
+                                {
+                                    System.out.println("This does not exist, please try again");
+                                    uInput = scan.nextLine();
+                                }
+                                currentMeds.remove(Medication.searchMedsByName(uInput));
+                                medPatientObj.setCurrentMedications(currentMeds);
+                                break;
+                            case "3":
+                                updatingMeds = false;
+                                System.out.println("Exited medication editing");
+                                break;
+                            default:
+                                System.out.println("Incorrect input, please try again");
+                                break;
                         }
-                        Medication addedMeds = Medication.getMeds(newMeds);
-                        currentMeds.add(addedMeds);
-                        medPatientObj.setCurrentMedications(currentMeds);
-                        break;
-                    case "2":
-                        System.out.println(medPatientObj.getCurrentMedications());
-                        System.out.println("Which medication would you like to remove?");;
-                        break;
-                    default:
-                        System.out.println("Incorrect input, please try again");
-                        break;
-                }
-                break;
-            case "7":
-                break;
-            case "8":
-                break;
-            case "9":
-                break;
-            default:
-                System.out.println("Incorrect input, please try again");
-                break;
+                    }
+                    break;
+                case "7":
+                    System.out.println("Enter a number to select:");
+                    System.out.println("1. Add a measurement");
+                    System.out.println("2. Remove a measurement");
+                    String updateMeasurements = scan.nextLine();
+
+                    switch (updateMeasurements) 
+                    {
+                        case "1":
+                            Measurement newMeasurement = new Measurement();
+                            newMeasurement.enterMeasurement(currentMeasurements);
+                            break;
+                        case "2":
+                            System.out.println("Enter the number of the measurement you'd like to remove");
+                            int indexDisplay = 1;
+
+                            for (Measurement m : currentMeasurements) 
+                            {
+                                System.out.println(indexDisplay + ". " + m.getName());
+                                indexDisplay++;
+                            }
+
+                            String indexChosen = scan.nextLine();
+                            int index = Integer.parseInt(indexChosen);
+                            currentMeasurements.remove(index - 1);
+                        default:
+                            System.out.println("Incorrect input, please select either 1 or 2.");
+                            break;
+                    }
+                    break;
+                case "8":
+                    System.out.println("Enter a number to select:");
+                    System.out.println("1. Add a prescription");
+                    System.out.println("2. Remove a prescription");
+                    String updatedPrescriptions = scan.nextLine();
+                    switch (updatedPrescriptions) 
+                    {
+                        case "1":
+                            currentPrescriptions.add(Prescription.generatePrescription(medPatientObj.getNHI()));
+                            break;
+                        case "2":
+                            System.out.println("Enter the number of the prescription you'd like to remove\n");
+                            int indexDisplay = 1;
+                            for (Prescription p : currentPrescriptions) 
+                            {
+                                System.out.println(indexDisplay + ". Prescription" + p + "\n");
+                                indexDisplay++;
+                            }
+
+                            String indexChosen = scan.nextLine();
+                            int index = Integer.parseInt(indexChosen);
+                            currentPrescriptions.remove(index - 1);
+                            break;
+                        default:
+                            break;
+                    }
+                    break;
+                case "9":
+                    System.out.println("Enter a number to select:");
+                    System.out.println("1. Add a condition");
+                    System.out.println("2. Remove a condition");
+                    String updateConditions = scan.nextLine();
+
+                    switch (updateConditions) 
+                    {
+                        case "1":
+                            MedicalCondition addedCondition = new MedicalCondition();
+                            addedCondition.enterConditions(currentConditions);
+                            medPatientObj.setConditions(currentConditions);
+                            break;
+                        case "2":
+                            Iterator it = currentConditions.iterator();
+                            HashMap<String, MedicalCondition> medCondReference = new HashMap<String, MedicalCondition>();
+                            System.out.println("Enter the number that corresponds to the condition you want to remove");
+                            int c = 1;
+
+                            while (it.hasNext()) 
+                            {
+                                MedicalCondition currentCond = (MedicalCondition) it.next();
+                                System.out.println(c + ". Condition Name: " + currentCond.getName() + ", Condition Description: " + currentCond.getDescription());
+                                medCondReference.put(String.valueOf(c), new MedicalCondition(currentCond.getName(), currentCond.getDescription()));
+                                c++;
+                            }
+
+                            String removeCondition = scan.nextLine();
+
+                            while (!medCondReference.containsKey(removeCondition)) 
+                            {
+                                System.out.println("This does not exist within the list of conditions, please try again");
+                                removeCondition = scan.nextLine();
+                            }
+
+                            currentConditions.remove(medCondReference.get(removeCondition));
+                            medPatientObj.setConditions(currentConditions);
+                            break;
+                        default:
+                            System.out.println("Incorrect input, please try again");
+                            break;
+                    }
+                    break;
+                case "10":
+                    runningEdit = false;
+                    System.out.println("Exited edit menu");
+                    break;
+                    
+                default:
+                    System.out.println("Incorrect input, please try again");
+                    break;
+            }
         }
+     
         
         //confirm that the updates are wanted.
+        System.out.println("Do you want to update these details? (y/n)");
+        String confirmUpdate = scan.nextLine();
         
-        replacePatient(medPatientObj);
-        System.out.println("Updated patient details:\n");
-        medPatientObj.displayPatientDetails();
+        if(confirmUpdate.equalsIgnoreCase("y"))
+        {
+            System.out.println("Updated patient details:\n");
+            replacePatient(medPatientObj);
+            medPatientObj.displayPatientDetails();
+            
+        }
+        else if(confirmUpdate.equalsIgnoreCase("n"))
+        {
+            System.out.println("Cancelled Update");
+        }
     }
 
     /**

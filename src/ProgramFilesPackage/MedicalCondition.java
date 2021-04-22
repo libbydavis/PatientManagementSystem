@@ -43,4 +43,37 @@ public class MedicalCondition {
             }
         }
     }
+    
+    /**
+     * 
+     * @param o
+     * @return 
+     * @author Raj
+     */
+    public boolean equals(Object o) 
+    {
+        if(o != null && o instanceof MedicalCondition)
+        {
+            String conditionName = ((MedicalCondition)o).getName();
+            String conditionDescription = ((MedicalCondition)o).getDescription();
+            
+            if((conditionDescription != null) && (conditionName != null) && (conditionName.equals(this.name) && (conditionDescription.equals(this.description))))
+            {
+                return true;
+            }     
+        }
+        return false;
+    }
+    
+    /**
+     * 
+     * @return 
+     * @author Raj
+     */
+    public int hashCode()
+    {
+        int hashCode = 1;
+        hashCode = 180 * hashCode + 563;
+        return hashCode;
+    }
 }

@@ -14,7 +14,10 @@ import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import java.io.FileWriter;
 import java.io.IOException;
-
+/**
+ * 
+ * @author Raj
+ */
 public class Medication 
 {
     private String name;
@@ -54,22 +57,55 @@ public class Medication
     {
         return conditions;
     }
+    /**
+     * 
+     * @param medName
+     * @return
+     * @throws FileNotFoundException 
+     * @author Raj
+     */
+    public static Medication searchMedsByName(String medName) throws FileNotFoundException 
+    {
+        char[] uInputCharArray = medName.toLowerCase().toCharArray();
+        uInputCharArray[0] = Character.toUpperCase(uInputCharArray[0]);
+        Medication removedMeds = null;
+        medName = String.valueOf(uInputCharArray);
+        
+        for (int i = 1; i < Medication.fileToHashMap().size(); i++) 
+        {
+            if (Medication.fileToHashMap().get(String.valueOf(i)).getName().equals(medName)) 
+            {
+                removedMeds = Medication.fileToHashMap().get(String.valueOf(i));    
+            }
+        }
+        return removedMeds;
+    }
     
      /**
      * 
      * @param meds
      * @return
      * @throws FileNotFoundException 
+     * @author Raj
      */
-    public static Medication getMeds(String meds) throws FileNotFoundException 
+ 
+    /**
+     *
+     * @param medIndex
+     * @return
+     * @throws FileNotFoundException
+     * @author Raj
+     */
+    public static Medication getMeds(String medIndex) throws FileNotFoundException 
     {
-       return Medication.fileToHashMap().get(meds);
+       return Medication.fileToHashMap().get(medIndex);
     }
     
     /**
      * 
      * @param medChoice
      * @throws FileNotFoundException 
+     * @author Raj
      */
     public static void validateMeds(String medChoice) throws FileNotFoundException
     {
@@ -85,6 +121,7 @@ public class Medication
      * 
      * @return
      * @throws FileNotFoundException 
+     * @author Raj
      */
     public static HashMap<String, Medication> fileToHashMap() throws FileNotFoundException 
     {
@@ -98,6 +135,7 @@ public class Medication
     /**
      * 
      * @throws FileNotFoundException 
+     * @author Raj
      */
     public static void printMedInfo() throws FileNotFoundException 
     {
@@ -129,6 +167,7 @@ public class Medication
     /**
      * 
      * @throws FileNotFoundException 
+     * @author Raj
      */
     public static void printMedList() throws FileNotFoundException 
     {
@@ -137,6 +176,37 @@ public class Medication
         {
             System.out.println(" (" + s.getKey() + ")\t  " + s.getValue().getName());
         }
+    }
+    /**
+     * 
+     * @param o
+     * @return 
+     * @author Raj
+     */
+    public boolean equals(Object o) 
+    {
+        if(o != null && o instanceof Medication)
+        {
+            String meds = ((Medication)o).getName();
+            
+            if(meds != null && meds.equals(this.name))
+            {
+                return true;
+            }     
+        }
+        return false;
+    }
+    
+    /**
+     * 
+     * @return 
+     * @author Raj
+     */ 
+    public int hashCode()
+    {
+        int hashCode = 1;
+        hashCode = 180 * hashCode + 5;
+        return hashCode;
     }
 
     public String toString() 

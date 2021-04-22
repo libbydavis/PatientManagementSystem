@@ -2,6 +2,7 @@ package ProgramFilesPackage;
 
 import java.io.IOException;
 import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Doctor implements User{
@@ -38,7 +39,18 @@ public class Doctor implements User{
                     currentAppointment.runAppointment(currentPatient);
                     break;
                 case "3":
-                    Prescription.generatePrescription();
+                    // ask the user the NHI number of the patient they'd like to make a prescription for.
+                    MedicalPatient medPatObj = new MedicalPatient("");
+                    System.out.println("Enter the NHI of the patient you'd like to make a prescription for:");
+                    String prescription = "";
+                       do
+                    {
+                        prescription = scan.nextLine();
+                    }while(medPatObj.validateNHI(prescription) == false);
+                    
+                    medPatObj = (MedicalPatient) medPatObj.findPatientInDatabase(prescription);
+                    medPatObj.getPrescriptions().add(Prescription.generatePrescription(prescription));
+                    medPatObj.replacePatient(medPatObj);
                     break;
                 case "4":
                     MedicalPatient addPatient = new MedicalPatient("currentNhi");
@@ -52,7 +64,7 @@ public class Doctor implements User{
                     {
                         patientNHI = scan.nextLine();
                     }while(medPatientObj.validateNHI(patientNHI) == false);
-                    medPatientObj.validateNHI(patientNHI);
+                    //medPatientObj.validateNHI(patientNHI);
                     medPatientObj.editPatient(patientNHI);
                     break;
                 case "6":
