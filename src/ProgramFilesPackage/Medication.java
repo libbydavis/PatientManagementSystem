@@ -71,23 +71,16 @@ public class Medication
         Medication removedMeds = null;
         medName = String.valueOf(uInputCharArray);
         
-        for (int i = 1; i < Medication.fileToHashMap().size(); i++) 
+        for (int i = 1; i < Medication.fileToHashMap().size() + 1; i++) 
         {
-            if (Medication.fileToHashMap().get(String.valueOf(i)).getName().equals(medName)) 
+            String medNameInDB = Medication.fileToHashMap().get(String.valueOf(i)).getName();
+            if (medNameInDB.equals(medName)) 
             {
                 removedMeds = Medication.fileToHashMap().get(String.valueOf(i));    
             }
         }
         return removedMeds;
     }
-    
-     /**
-     * 
-     * @param meds
-     * @return
-     * @throws FileNotFoundException 
-     * @author Raj
-     */
  
     /**
      *

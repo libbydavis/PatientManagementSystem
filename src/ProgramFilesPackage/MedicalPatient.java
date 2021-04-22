@@ -384,33 +384,43 @@ public class MedicalPatient implements Patient
                     }
                     break;
                 case "7":
-                    System.out.println("Enter a number to select:");
-                    System.out.println("1. Add a measurement");
-                    System.out.println("2. Remove a measurement");
-                    String updateMeasurements = scan.nextLine();
+                    boolean updatingMeasurements = true;
+                    while(updatingMeasurements)
+                    {         
+                        System.out.println("Enter a number to select:");
+                        System.out.println("1. Add a measurement");
+                        System.out.println("2. Remove a measurement");
+                        System.out.println("3. Exit measurement editing");
+                        String updateMeasurements = scan.nextLine();
+                        
+                        switch (updateMeasurements) 
+                        {
+                            case "1":
+                                Measurement newMeasurement = new Measurement();
+                                newMeasurement.enterMeasurement(currentMeasurements);
+                                break;
+                            case "2":
+                                System.out.println("Enter the number of the measurement you'd like to remove");
+                                int indexDisplay = 1;
 
-                    switch (updateMeasurements) 
-                    {
-                        case "1":
-                            Measurement newMeasurement = new Measurement();
-                            newMeasurement.enterMeasurement(currentMeasurements);
-                            break;
-                        case "2":
-                            System.out.println("Enter the number of the measurement you'd like to remove");
-                            int indexDisplay = 1;
+                                for (Measurement m : currentMeasurements) 
+                                {
+                                    System.out.println(indexDisplay + ". " + m.getName());
+                                    indexDisplay++;
+                                }
 
-                            for (Measurement m : currentMeasurements) 
-                            {
-                                System.out.println(indexDisplay + ". " + m.getName());
-                                indexDisplay++;
-                            }
-
-                            String indexChosen = scan.nextLine();
-                            int index = Integer.parseInt(indexChosen);
-                            currentMeasurements.remove(index - 1);
-                        default:
-                            System.out.println("Incorrect input, please select either 1 or 2.");
-                            break;
+                                String indexChosen = scan.nextLine();
+                                int index = Integer.parseInt(indexChosen);
+                                currentMeasurements.remove(index - 1);
+                                break;
+                            case "3":
+                                updatingMeasurements = false;
+                                System.out.println("Exited measurement editing");
+                                break;
+                            default:
+                                System.out.println("Incorrect input, please select either 1 or 2.");
+                                break;
+                        }
                     }
                     break;
                 case "8":
@@ -424,63 +434,72 @@ public class MedicalPatient implements Patient
                             currentPrescriptions.add(Prescription.generatePrescription(medPatientObj.getNHI()));
                             break;
                         case "2":
-                            System.out.println("Enter the number of the prescription you'd like to remove\n");
                             int indexDisplay = 1;
                             for (Prescription p : currentPrescriptions) 
                             {
                                 System.out.println(indexDisplay + ". Prescription" + p + "\n");
                                 indexDisplay++;
                             }
+                            //NumberFormatException
+                            System.out.println("Enter the number of the prescription you'd like to remove:");
 
                             String indexChosen = scan.nextLine();
                             int index = Integer.parseInt(indexChosen);
                             currentPrescriptions.remove(index - 1);
                             break;
                         default:
+                            System.out.println("Incorrect input, please try again");
                             break;
                     }
                     break;
                 case "9":
-                    System.out.println("Enter a number to select:");
-                    System.out.println("1. Add a condition");
-                    System.out.println("2. Remove a condition");
-                    String updateConditions = scan.nextLine();
+                    boolean updatingConditions = true;
+                    while(updatingConditions)
+                    {  
+                        System.out.println("Enter a number to select:");
+                        System.out.println("1. Add a condition");
+                        System.out.println("2. Remove a condition");
+                        System.out.println("3. Exit conditions editing");
+                        String updateConditions = scan.nextLine();
+                        switch (updateConditions) 
+                        {
+                            case "1":
+                                MedicalCondition addedCondition = new MedicalCondition();
+                                addedCondition.enterConditions(currentConditions);
+                                medPatientObj.setConditions(currentConditions);
+                                break;
+                            case "2":
+                                Iterator it = currentConditions.iterator();
+                                HashMap<String, MedicalCondition> medCondReference = new HashMap<String, MedicalCondition>();
+                                int c = 1;
 
-                    switch (updateConditions) 
-                    {
-                        case "1":
-                            MedicalCondition addedCondition = new MedicalCondition();
-                            addedCondition.enterConditions(currentConditions);
-                            medPatientObj.setConditions(currentConditions);
-                            break;
-                        case "2":
-                            Iterator it = currentConditions.iterator();
-                            HashMap<String, MedicalCondition> medCondReference = new HashMap<String, MedicalCondition>();
-                            System.out.println("Enter the number that corresponds to the condition you want to remove");
-                            int c = 1;
+                                while (it.hasNext()) 
+                                {
+                                    MedicalCondition currentCond = (MedicalCondition) it.next();
+                                    System.out.println(c + ". Condition Name: " + currentCond.getName() + ", Condition Description: " + currentCond.getDescription());
+                                    medCondReference.put(String.valueOf(c), new MedicalCondition(currentCond.getName(), currentCond.getDescription()));
+                                    c++;
+                                }
 
-                            while (it.hasNext()) 
-                            {
-                                MedicalCondition currentCond = (MedicalCondition) it.next();
-                                System.out.println(c + ". Condition Name: " + currentCond.getName() + ", Condition Description: " + currentCond.getDescription());
-                                medCondReference.put(String.valueOf(c), new MedicalCondition(currentCond.getName(), currentCond.getDescription()));
-                                c++;
-                            }
+                                System.out.println("Enter the number that corresponds to the condition you want to remove:");
+                                String removeCondition = scan.nextLine();
 
-                            String removeCondition = scan.nextLine();
+                                while (!medCondReference.containsKey(removeCondition)) 
+                                {
+                                    System.out.println("This does not exist within the list of conditions, please try again");
+                                    removeCondition = scan.nextLine();
+                                }
 
-                            while (!medCondReference.containsKey(removeCondition)) 
-                            {
-                                System.out.println("This does not exist within the list of conditions, please try again");
-                                removeCondition = scan.nextLine();
-                            }
-
-                            currentConditions.remove(medCondReference.get(removeCondition));
-                            medPatientObj.setConditions(currentConditions);
-                            break;
-                        default:
-                            System.out.println("Incorrect input, please try again");
-                            break;
+                                currentConditions.remove(medCondReference.get(removeCondition));
+                                medPatientObj.setConditions(currentConditions);
+                                break;
+                            case "3":
+                                updatingConditions = false;
+                                break;
+                            default:
+                                System.out.println("Incorrect input, please try again");
+                                break;
+                        }
                     }
                     break;
                 case "10":
