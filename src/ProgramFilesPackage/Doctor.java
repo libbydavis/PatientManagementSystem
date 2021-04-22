@@ -76,7 +76,7 @@ public class Doctor implements User{
                     System.out.println("Exiting...");
                     break;
                 default:
-                    System.out.println("Please enter a number from 1-4.");
+                    System.out.println("Please enter a number from 1-6.");
                     break;
             }
         }

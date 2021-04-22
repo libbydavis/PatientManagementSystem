@@ -178,6 +178,19 @@ public class MedicalPatient implements Patient
         return p1;
     }
 
+    public String getPatientStringDetail(String text) {
+        Scanner scan = new Scanner(System.in);
+        System.out.println(text + ":");
+        String input = scan.nextLine();
+        return input;
+    }
+
+    public int getPatientIntDetail(String text) {
+        int num = 0;
+        System.out.println(text + ":");
+        num = Checker.IntegerInput(num);
+        return num;
+    }
     /**
      * @author -LibbyDavis
      * gets all information for a new patient, then saves it to the database using addPatientToDatabase()
@@ -189,29 +202,23 @@ public class MedicalPatient implements Patient
         //get details
         Scanner scan = new Scanner(System.in);
         //first name
-        System.out.println("First name:");
-        String fName = scan.nextLine();
+        String fName = getPatientStringDetail("First name");
         currentPatient.setfName(fName);
 
         //last name
-        System.out.println("Last name:");
-        String lName = scan.nextLine();
+        String lName = getPatientStringDetail("Last name");
         currentPatient.setlName(lName);
 
         //age
-        System.out.println("Age:");
-        int age = 0;
-        age = Checker.IntegerInput(age);
+        int age = getPatientIntDetail("Age");
         currentPatient.setAge(age);
 
         //phone number
-        System.out.println("Phone number:");
-        String phoneNumber = scan.nextLine();
+        String phoneNumber = getPatientStringDetail("Phone number");
         currentPatient.setPhoneNumber(phoneNumber);
 
         //address
-        System.out.println("Address:");
-        String address = scan.nextLine();
+        String address = getPatientStringDetail("Address");
         currentPatient.setAddress(address);
 
         //add to conditions, etc.
@@ -294,26 +301,29 @@ public class MedicalPatient implements Patient
             switch (patientAttribute) 
             {
                 case "1":
-                    System.out.println("Enter updated first name:");
-                    String updatedFName = scan.nextLine();
+                    String updatedFName = getPatientStringDetail("Enter updated first name");
                     medPatientObj.setfName(updatedFName);
+                    System.out.println("First name updated to " + updatedFName);
                     break;
                 case "2":
-                    System.out.println("Enter updated last name:");
-                    String updatedLName = scan.nextLine();
+                    String updatedLName = getPatientStringDetail("Enter updated last name");
                     medPatientObj.setlName(updatedLName);
+                    System.out.println("Last name updated to " + updatedLName);
                     break;
                 case "3":
-                    System.out.println("Enter updated age:");
+                    int age = getPatientIntDetail("Enter updated age");
                     medPatientObj.setAge(age);
+                    System.out.println("Age updated to " + age);
                     break;
                 case "4":
-                    System.out.println("Enter updated phone number:");
+                    String phoneNumber = getPatientStringDetail("Enter updated phone number");
                     medPatientObj.setPhoneNumber(phoneNumber);
+                    System.out.println("Phone number updated to " + phoneNumber);
                     break;
                 case "5":
-                    System.out.println("Enter updated address:");
+                    String address = getPatientStringDetail("Enter updated address");
                     medPatientObj.setAddress(address);
+                    System.out.println("Address updated to " + address);
                     break;
                 case "6":
                     boolean updatingMeds = true;
