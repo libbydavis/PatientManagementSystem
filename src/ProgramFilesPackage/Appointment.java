@@ -39,6 +39,11 @@ public class Appointment {
         return notes;
     }
 
+    /**
+     * @author -LibbyDavis
+     * @param patient
+     * Runs the menu for appointment and calls each method to add reasons, measurements and notes
+     */
     public void runAppointment(Patient patient) throws IOException {
         System.out.println("\nNew Appointment\n");
         //show patient information
@@ -95,7 +100,10 @@ public class Appointment {
         }
 
     }
-
+    /**
+     * @author -LibbyDavis
+     * Allows user to enter reasons for appointments, as well as review, delete edit them
+     */
         private void enterReason() {
             //get reasons
             Scanner scan = new Scanner(System.in);
@@ -171,6 +179,12 @@ public class Appointment {
             }
         }
 
+    /**
+     * @author -LibbyDavis
+     * @param title
+     * @param list
+     * Allows you to print out each item in an ArrayList
+     */
         private void printList(String title, ArrayList list) {
             System.out.println(title + ":");
             for (int i = 0; i < list.size(); i++) {
@@ -180,6 +194,10 @@ public class Appointment {
 
 
 
+    /**
+     * @author -LibbyDavis
+     * Allows you to enter notes for an appointment
+     */
         private void enterNote() {
             Scanner scan = new Scanner(System.in);
             String note = "";
@@ -193,6 +211,11 @@ public class Appointment {
             printList("Notes", this.notes);
         }
 
+    /**
+     * @author -LibbyDavis
+     * @return String
+     * Prints out the appointment details in a nice format
+     */
         public String toString() {
             String appointmentString = "Appointment Overview:\n" +  this.dateString + "\nReasons:\n";
             for (int i = 0; i < this.reasons.size(); i++) {

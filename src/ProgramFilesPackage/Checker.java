@@ -3,6 +3,12 @@ package ProgramFilesPackage;
 import java.util.Scanner;
 
 public class Checker {
+    /**
+     * @author -LibbyDavis
+     * @param input
+     * @return int
+     * Gets an int input
+     */
     public static int IntegerInput(int input) {
         Scanner scan = new Scanner(System.in);
         boolean valid = false;
@@ -18,6 +24,12 @@ public class Checker {
         return input;
     }
 
+    /**
+     * @author -LibbyDavis
+     * @param input
+     * @return double
+     * Gets a double input
+     */
     public static double DoubleInput(double input) {
         Scanner scan = new Scanner(System.in);
         boolean valid = false;
