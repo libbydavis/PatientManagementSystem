@@ -9,6 +9,10 @@ public class Doctor implements User{
     int age;
     
     // Need a doctor constructor and a getter for the doctor's name so their name can be added to prescriptions.
+    /**
+     * @author -LibbyDavis & -Raj Rathod
+     * Runs menu for doctor to add and edit patients, create prescriptions, run appointments, etc.
+     */
     @Override
     public void userMenu() throws IOException 
     {
