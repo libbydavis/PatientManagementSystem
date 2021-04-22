@@ -110,6 +110,7 @@ public class Appointment {
             String reason = "";
             while (!reason.equals("x")) {
                 System.out.println("Enter a reason that the patient came in for the appointment (or x to stop adding reasons):");
+                scan.skip("");
                 reason = scan.nextLine();
                 if (!reason.equals("x")) {
                     this.reasons.add(reason);
@@ -205,6 +206,7 @@ public class Appointment {
             String note = "";
             while (!note.equals("x")) {
                 System.out.println("Enter a note (or x to stop adding notes):");
+                scan.skip("");
                 note = scan.nextLine();
                 if (!note.equals("x")) {
                     this.notes.add(note);
