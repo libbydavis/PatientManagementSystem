@@ -297,23 +297,30 @@ public class MedicalPatient implements Patient
                     System.out.println("Enter updated first name:");
                     String updatedFName = scan.nextLine();
                     medPatientObj.setfName(updatedFName);
+                    System.out.println("First name updated to " + updatedFName);
                     break;
                 case "2":
                     System.out.println("Enter updated last name:");
                     String updatedLName = scan.nextLine();
                     medPatientObj.setlName(updatedLName);
+                    System.out.println("Last name updated to " + updatedLName);
                     break;
                 case "3":
                     System.out.println("Enter updated age:");
+                    int age = 0;
+                    age = Checker.IntegerInput(age);
                     medPatientObj.setAge(age);
+                    System.out.println("Age updated to " + age);
                     break;
                 case "4":
                     System.out.println("Enter updated phone number:");
                     medPatientObj.setPhoneNumber(phoneNumber);
+                    System.out.println("Phone number updated to " );
                     break;
                 case "5":
                     System.out.println("Enter updated address:");
                     medPatientObj.setAddress(address);
+                    System.out.println("Address updated to " );
                     break;
                 case "6":
                     boolean updatingMeds = true;

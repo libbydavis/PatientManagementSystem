@@ -175,6 +175,8 @@ public class Appointment {
                         //confirm reason list
                         System.out.println("Confirmed");
                         break;
+                    default:
+                        System.out.println("Please enter a number from 1-3");
                 }
             }
         }
