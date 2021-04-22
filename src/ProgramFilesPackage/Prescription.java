@@ -2,10 +2,7 @@ package ProgramFilesPackage;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.InputMismatchException;
-import java.util.Scanner;
+import java.util.*;
 
 public class Prescription 
 {
@@ -99,11 +96,34 @@ public class Prescription
                         catch(InputMismatchException e)
                         {
                             scan.next();
-                            System.out.println("Invalide input, please try again");
+                            System.out.println("Invalid input, please try again");
                             medRepeatLoop = true;
                         }
                     }
+
                     patientPresc = new Prescription(prescribedDate, prescribedTime, patientMeds, docName, patients.getName(), medRepeat);
+
+                    //patientPrescs = new ArrayList<Prescription>();
+                    //patientPrescs.add(new Prescription(prescribedDate, prescribedTime, patientMeds, docName, patients.findPatientInDatabase(prescPatient), medRepeat));
+
+                    //add to database -Libby
+                    MedicalPatient tempPatient = new MedicalPatient("");
+//                    tempPatient = (MedicalPatient) tempPatient.findPatientInDatabase(prescPatient);
+//                    tempPatient.setPrescriptions(patientPrescs);
+                    //add to current medications
+                    HashSet<Medication> holdMedications = tempPatient.getCurrentMedications();
+                    holdMedications.add(patientMeds);
+                    tempPatient.setCurrentMedications(holdMedications);
+                    //save to database
+                    tempPatient.replacePatient(tempPatient);
+
+
+                    /*
+                    MedicalPatient tempPatient = (MedicalPatient) patients.findPatientInDatabase(prescPatient);
+                    tempPatient.setPrescriptions(patientPrescs);
+                    MedicalPatient[] tempPatientList = tempPatient.deserializePatients();
+                    */
+
                     scan.skip("");
                     break;
                 case "4":
