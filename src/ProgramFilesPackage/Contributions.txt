@@ -1,0 +1,61 @@
+Contributions
+Libby Davis 19090680 - 50%
+Raj Rathod 17969599 - 50%
+
+Method Authors:
+
+Appointment
+runAppointment(Patient patient) - Libby
+enterReason() - Libby
+printList(String title, ArrayList list) - Libby
+enterNote() - Libby
+toString() - Libby
+
+Checker
+IntegerInput(int input) - Libby
+DoubleInput(double input) - Libby
+
+Doctor
+userMenu() - Libby and Raj
+
+Dosage
+Dosage() - Raj
+
+Measurement
+enterMeasurement(ArrayList measurementList) - Raj
+
+MedicalCondition
+enterConditions(HashSet conditions) - Raj
+equals(Object o) - Raj
+hashCode() Raj
+
+MedicalPatient
+validateNHI(String nhi) - Libby
+getValidNHI() - Libby
+saveToAppointmentsHistory(Appointment a) - Libby
+findPatientInDatabase(String nhi) - Libby
+getPatientStringDetail(String text) - Libby
+getPatientIntDetail(String text) - Libby
+addPatient() - Libby
+editPatient(String NHI) - Raj
+replacePatient(MedicalPatient patientReplace) - Libby
+addPatientToDatabase(MedicalPatient currentPatient) - Libby
+listAllPatients() - Libby
+savePatientsToDatabase(MedicalPatient[] listPatients) - Libby
+deserializePatients() - Libby
+displayPatientDetails() - Libby
+
+Medication
+searchMedsByName(String medName) - Raj
+getMeds(String medIndex) - Raj
+validateMeds(String medChoice) - Raj
+fileToHashMap() - Raj
+printMedInfo() - Raj
+printMedList() - Raj
+equals(Object o) - Raj
+hashCode() - Raj
+toString() - Raj
+
+Prescription
+generatePrescription(String NHI) - Raj
+toString() - Raj

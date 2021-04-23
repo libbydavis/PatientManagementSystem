@@ -104,6 +104,10 @@ public class MedicalPatient implements Patient
     {
         this.conditions = conditions;
     }
+    @Override
+    public String getName() {
+        return fName;
+    }
     
     /**
      * @author -LibbyDavis
@@ -151,10 +155,6 @@ public class MedicalPatient implements Patient
         replacePatient(this);
     }
 
-    @Override
-    public String getName() {
-        return fName;
-    }
 
     /**
      * @author -LibbyDavis
@@ -180,8 +180,14 @@ public class MedicalPatient implements Patient
 
     public String getPatientStringDetail(String text) {
         Scanner scan = new Scanner(System.in);
-        System.out.println(text + ":");
-        String input = scan.nextLine();
+        String input = "";
+        while (input.length() < 2) {
+            System.out.println(text + ":");
+            input = scan.nextLine();
+            if (input.length() < 2) {
+                System.out.println("Please enter at least 2 characters.");
+            }
+        }
         return input;
     }
 
