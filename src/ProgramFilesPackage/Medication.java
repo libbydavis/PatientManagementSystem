@@ -142,18 +142,15 @@ public class Medication
             System.out.println("\nEnter the MedNo# of the medication you want to see details of: (x) to exit");
             uInput = scan.nextLine();
             
-            if(uInput.equalsIgnoreCase("x"))
-            {
-                break;
-            }
-            
-            while(!fileToHashMap().containsKey(uInput)) 
+            while(!fileToHashMap().containsKey(uInput) && !uInput.equalsIgnoreCase("x"))
             {
                 System.out.println("Incorrect input, please try again");
                 uInput = scan.nextLine();
             }
 
-            System.out.println(fileToHashMap().get(uInput));
+            if (!uInput.equals("x")) {
+                System.out.println(fileToHashMap().get(uInput));
+            }
         }
     }
     
