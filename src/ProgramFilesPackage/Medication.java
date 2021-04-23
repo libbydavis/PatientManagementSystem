@@ -100,7 +100,7 @@ public class Medication
      * @throws FileNotFoundException 
      * @author Raj
      */
-    public static void validateMeds(String medChoice) throws FileNotFoundException
+    public static String validateMeds(String medChoice) throws FileNotFoundException
     {
         Scanner scanner = new Scanner(System.in);
         while(!Medication.fileToHashMap().containsKey(medChoice))
@@ -108,6 +108,7 @@ public class Medication
             System.out.println("This does not exist in the list of medication, please try again");
             medChoice = scanner.nextLine();
         }
+        return medChoice;
     }
     
     /**
@@ -142,18 +143,15 @@ public class Medication
             System.out.println("\nEnter the MedNo# of the medication you want to see details of: (x) to exit");
             uInput = scan.nextLine();
             
-            if(uInput.equalsIgnoreCase("x"))
-            {
-                break;
-            }
-            
-            while(!fileToHashMap().containsKey(uInput)) 
+            while(!fileToHashMap().containsKey(uInput) && !uInput.equalsIgnoreCase("x"))
             {
                 System.out.println("Incorrect input, please try again");
                 uInput = scan.nextLine();
             }
 
-            System.out.println(fileToHashMap().get(uInput));
+            if (!uInput.equals("x")) {
+                System.out.println(fileToHashMap().get(uInput));
+            }
         }
     }
     

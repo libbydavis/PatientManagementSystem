@@ -1,1 +1,0 @@
-[{"date":"Mar 31, 2021, 11:40:15 PM","patient":{"fName":"Ila","lName":"Dee","age":54,"phoneNumber":"234345","address":"dee street","NHI":"fed765","conditions":[],"currentMedications":[],"measurements":[],"prescriptions":[]},"reasons":[],"measurementsTaken":[],"notes":["testing"]}]
