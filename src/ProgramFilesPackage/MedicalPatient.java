@@ -296,7 +296,7 @@ public class MedicalPatient implements Patient
         {
             System.out.println("\nWhat details of this patient would you like to edit? Enter a number to select:");
             System.out.println("1. First Name" + "\n2. Last Name" + "\n3. Age" + "\n4. Phone Number" + "\n5. Address" + 
-                    "\n6. Current Medication" + "\n7. Measurements" + "\n8. Prescriptions" + "\n9. Conditions" + "\n10. Exit Edit Menu" + "\n11. Completed editing patient details");
+                    "\n6. Current Medication" + "\n7. Measurements" + "\n8. Prescriptions" + "\n9. Conditions" + "\n10. Exit Edit Menu"/* + "\n11. Completed editing patient details"*/);
             String patientAttribute = scan.nextLine();
             switch (patientAttribute) 
             {
@@ -304,26 +304,31 @@ public class MedicalPatient implements Patient
                     String updatedFName = getPatientStringDetail("Enter updated first name");
                     medPatientObj.setfName(updatedFName);
                     System.out.println("First name updated to " + updatedFName);
+                    runningEdit = false;
                     break;
                 case "2":
                     String updatedLName = getPatientStringDetail("Enter updated last name");
                     medPatientObj.setlName(updatedLName);
                     System.out.println("Last name updated to " + updatedLName);
+                    runningEdit = false;
                     break;
                 case "3":
                     int age = getPatientIntDetail("Enter updated age");
                     medPatientObj.setAge(age);
                     System.out.println("Age updated to " + age);
+                    runningEdit = false;
                     break;
                 case "4":
                     String phoneNumber = getPatientStringDetail("Enter updated phone number");
                     medPatientObj.setPhoneNumber(phoneNumber);
                     System.out.println("Phone number updated to " + phoneNumber);
+                    runningEdit = false;
                     break;
                 case "5":
                     String address = getPatientStringDetail("Enter updated address");
                     medPatientObj.setAddress(address);
                     System.out.println("Address updated to " + address);
+                    runningEdit = false;
                     break;
                 case "6":
                     boolean updatingMeds = true;
@@ -392,6 +397,7 @@ public class MedicalPatient implements Patient
                                 break;
                         }
                     }
+                    runningEdit = false;
                     break;
                 case "7":
                     boolean updatingMeasurements = true;
@@ -418,7 +424,7 @@ public class MedicalPatient implements Patient
                                     System.out.println(indexDisplay + ". " + m.getName());
                                     indexDisplay++;
                                 }
-
+                                
                                 String indexChosen = scan.nextLine();
                                 int index = Integer.parseInt(indexChosen);
                                 currentMeasurements.remove(index - 1);
@@ -432,35 +438,56 @@ public class MedicalPatient implements Patient
                                 break;
                         }
                     }
+                    runningEdit = false;
                     break;
                 case "8":
-                    System.out.println("Enter a number to select:");
-                    System.out.println("1. Add a prescription");
-                    System.out.println("2. Remove a prescription");
-                    String updatedPrescriptions = scan.nextLine();
-                    switch (updatedPrescriptions) 
+                    boolean updatingPrescriptions = true;
+                    while(updatingPrescriptions)
                     {
-                        case "1":
-                            currentPrescriptions.add(Prescription.generatePrescription(medPatientObj.getNHI()));
-                            break;
-                        case "2":
-                            int indexDisplay = 1;
-                            for (Prescription p : currentPrescriptions) 
-                            {
-                                System.out.println(indexDisplay + ". Prescription" + p + "\n");
-                                indexDisplay++;
-                            }
-                            //NumberFormatException
-                            System.out.println("Enter the number of the prescription you'd like to remove:");
-
-                            String indexChosen = scan.nextLine();
-                            int index = Integer.parseInt(indexChosen);
-                            currentPrescriptions.remove(index - 1);
-                            break;
-                        default:
-                            System.out.println("Incorrect input, please try again");
-                            break;
+                        System.out.println("Enter a number to select:");
+                        System.out.println("1. Add a prescription");
+                        System.out.println("2. Remove a prescription");
+                        System.out.println("3. Exit prescription editing");
+                        String updatedPrescriptions = scan.nextLine();
+                        switch (updatedPrescriptions) 
+                        {
+                            case "1":
+                                currentPrescriptions.add(Prescription.generatePrescription(medPatientObj.getNHI()));
+                                break;
+                            case "2":
+                                int indexDisplay = 1;
+                                for (Prescription p : currentPrescriptions) 
+                                {
+                                    System.out.println(indexDisplay + ". Prescription" + p + "\n");
+                                    indexDisplay++;
+                                }
+                                System.out.println("Enter the number of the prescription you'd like to remove:");
+                                //NumberFormatException
+                                boolean catchException = true;
+                                while(catchException)
+                                {
+                                    try
+                                    {
+                                        String indexChosen = scan.nextLine();
+                                        int index = Integer.parseInt(indexChosen);
+                                        currentPrescriptions.remove(index - 1);
+                                        catchException = false;
+                                    }
+                                    catch(NumberFormatException e)
+                                    {
+                                        System.out.println("Incorrect input, please try again");
+                                    }
+                                }
+                                break;
+                            case "3":
+                                System.out.println("Exited prescription editing");
+                                updatingPrescriptions = false;
+                            default:
+                                System.out.println("Incorrect input, please try again");
+                                break;
+                        }
                     }
+                    runningEdit = false;
                     break;
                 case "9":
                     boolean updatingConditions = true;
@@ -511,12 +538,12 @@ public class MedicalPatient implements Patient
                                 break;
                         }
                     }
+                    runningEdit = false;
                     break;
                 case "10":
                     runningEdit = false;
                     System.out.println("Exited edit menu");
-                    break;
-                    
+                    return;      
                 default:
                     System.out.println("Incorrect input, please try again");
                     break;
@@ -698,6 +725,16 @@ public class MedicalPatient implements Patient
                 Measurement thisOne = iterator.next();
                 System.out.println(thisOne.getName() + ": " + thisOne.getMeasurement() + thisOne.getUnits());
             }
+        }
+        if(prescriptions.size() > 0)
+        {
+            Iterator<Prescription> it = prescriptions.iterator();
+            System.out.println("Prescriptions: ");
+            while(it.hasNext())
+            {
+                Prescription presc = it.next();
+                System.out.println("Date: " + presc.date + "\nTime: " + presc.time + "\nMedication: " +presc.meds.getName() + "\nRepeat Prescription: " + presc.repeat + "\n");
+            }    
         }
     }
 }
