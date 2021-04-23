@@ -68,7 +68,7 @@ public class Prescription
                     // Prompt for the medication
                     System.out.println("Enter the MedNo# of the medicine you'd like to prescribe:");
                     medChoice = scan.nextLine();
-                    Medication.validateMeds(medChoice); 
+                    medChoice = Medication.validateMeds(medChoice);
                     patientMeds = Medication.getMeds(medChoice);
                     // Prompt for Dosage
                     double doseAmount = 0.0;
