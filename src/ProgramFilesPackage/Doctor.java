@@ -9,7 +9,6 @@ public class Doctor implements User{
     String name;
     int age;
     
-    // Need a doctor constructor and a getter for the doctor's name so their name can be added to prescriptions.
     /**
      * @author -LibbyDavis & -Raj Rathod
      * Runs menu for doctor to add and edit patients, create prescriptions, run appointments, etc.
@@ -43,7 +42,6 @@ public class Doctor implements User{
                     currentAppointment.runAppointment(currentPatient);
                     break;
                 case "3":
-                    // ask the user the NHI number of the patient they'd like to make a prescription for.
                     MedicalPatient medPatObj = new MedicalPatient("");
                     System.out.println("Enter the NHI of the patient you'd like to make a prescription for:");
                     String prescription = "";
@@ -68,7 +66,6 @@ public class Doctor implements User{
                     {
                         patientNHI = scan.nextLine();
                     }while(medPatientObj.validateNHI(patientNHI) == false);
-                    //medPatientObj.validateNHI(patientNHI);
                     medPatientObj.editPatient(patientNHI);
                     break;
                 case "6":

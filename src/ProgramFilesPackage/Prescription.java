@@ -6,16 +6,41 @@ import java.util.*;
 
 public class Prescription 
 {
-    String date;
-    String time;
-    Medication meds;
-    String doctorName;
-    String patientName;
-    Boolean repeat;
+    private String date;
+    private String time;
+    private Medication meds;
+    private String doctorName;
+    private String patientName;
+    private Boolean repeat;
 
     public String getDate() 
     {
         return date;
+    }
+
+    public String getTime() 
+    {
+        return time;
+    }
+
+    public Medication getMeds() 
+    {
+        return meds;
+    }
+
+    public String getDoctorName() 
+    {
+        return doctorName;
+    }
+
+    public String getPatientName() 
+    {
+        return patientName;
+    }
+
+    public Boolean getRepeat() 
+    {
+        return repeat;
     }
     
     public Prescription(String date, String time, Medication meds, String doctorName, String patientName, Boolean repeat) 
@@ -27,7 +52,13 @@ public class Prescription
         this.patientName = patientName;
         this.repeat = repeat;
     }
-  
+    /**
+     * This method prompts the doctor for everything that is needed to fill out the 
+     * Prescription constructor and create a Prescription object in the process.
+     * @param NHI Is the NHI number of the patient the doctor is making a prescription for.
+     * @return The prescription object that the doctor has generated.
+     * @throws IOException 
+     */
     public static Prescription generatePrescription(String NHI) throws IOException 
     {
         Prescription patientPresc = null;
@@ -57,7 +88,7 @@ public class Prescription
                     // Variables needed to instantiate a prescription
                     Medication patientMeds;
                     String docName = "John Smith";
-                    String prescribedDate, prescribedTime, /*docName,*/ prescPatient, medChoice;
+                    String prescribedDate, prescribedTime, medChoice;
                     boolean medRepeat = false;
                     Date currentDate = new Date();
                     SimpleDateFormat timeFormatter = new SimpleDateFormat("HH:mm:ss");

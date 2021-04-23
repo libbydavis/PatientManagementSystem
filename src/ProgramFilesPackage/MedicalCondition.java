@@ -45,9 +45,9 @@ public class MedicalCondition {
     }
     
     /**
-     * 
-     * @param o
-     * @return 
+     * Compares the description and name of medical conditions to ensure that they're not the same.
+     * @param o The medical condition that is being compared.
+     * @return A Boolean letting you know whether a MedicalCondition object is the same as another.
      * @author Raj
      */
     public boolean equals(Object o) 
@@ -66,8 +66,8 @@ public class MedicalCondition {
     }
     
     /**
-     * 
-     * @return 
+     * Randomly generated hashcode for MedicalCondition objects.
+     * @return Randomly generated number.
      * @author Raj
      */
     public int hashCode()
